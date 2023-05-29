@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+      <meta charset="UTF-8">
+      <title>員工登入</title>
+    </head>
+<!-- ----------------------------------------------- -->
+<body> 
+    <h1>登入</h1>
+    
+    <form action="/" method="POST" >
+        <label>帳號:</label>
+        <input type="account" name="account">
+        <br>
+        <label>密碼:</label>
+        <input type="password" name="password">
+        <br>
+        <br>
+        <button>登入</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <P>{{message}}</P>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+</body> 
+</html>

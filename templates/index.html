@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>首頁</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    </head>
+
+<body>
+
+    <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+        <li style="display: flex; align-items: center;">
+          <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;" >
+          <a href="/add_project" class="layui-btn">建立</a>
+        </li>
+    
+        <li class="layui-nav-item" style="white-space: nowrap;">  
+          <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['user_name'] }}</a>
+          <dl class="layui-nav-child" style="text-align: left;">
+            <dd><a href="/chg_passwd">修改密碼</a></dd>
+            <dd><a href="/account_manage">帳戶管理</a></dd>
+            <dd><a href="/logout">登出</a></dd>
+          </dl>
+        </li>
+    </ul>
+    <br>
+
+<table>
+    <tr>
+        <td>專案ID</td>
+        <td>專案名稱</td>
+        <td>狀態</td>
+        <td>開始時間</td>
+        <td>預計結束時間</td>
+        <td>結束時間</td>
+        <td>完成百分比</td>
+        <td>預計工作天數</td>
+        <td>實際工作天數</td>
+        <!-- <td>操作</td> -->
+      </tr>
+      {% for process_project in work %}
+      <tr>
+        <td>{{process_project['SID']}}</td>
+        <td>{{process_project['project_name']}}</td>
+        <td>{{process_project['work_mode']}}</td>
+        <td>{{process_project['start_time']}}</td>
+        <td>{{process_project['expected_end_time']}}</td>
+        <td>{{process_project['end_time']}}</td>
+        <td>{{ process_project['percent_complete'] or 0 }}%</td>
+        <td>{{process_project['estimated_working_day']}}</td>
+        <td>{{process_project['actual_working_day']}}</td>
+      </tr>
+      {% endfor %}
+
+</table>
+<br>
+<br>
+<table>
+  <tr>
+      <td>專案ID</td>
+      <td>專案名稱</td>
+      <td>狀態</td>
+      <td>開始時間</td>
+      <td>預計結束時間</td>
+      <td>結束時間</td>
+      <td>完成百分比</td>
+      <td>預計工作天數</td>
+      <td>實際工作天數</td>
+      <!-- <td>操作</td> -->
+    </tr>
+    {% for end_project in finish_work %}
+    <tr>
+      <td>{{end_project['SID']}}</td>
+      <td>{{end_project['project_name']}}</td>
+      <td>{{end_project['work_mode']}}</td>
+      <td>{{end_project['start_time']}}</td>
+      <td>{{end_project['expected_end_time']}}</td>
+      <td>{{end_project['end_time']}}</td>
+      <td>{{ end_project['percent_complete'] or 0 }}%</td>
+      <td>{{end_project['estimated_working_day']}}</td>
+      <td>{{end_project['actual_working_day']}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+</body> 
+</html>
