@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>首頁</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    </head>
+
+<body>
+
+    <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+        <li style="display: flex; align-items: center;">
+          <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;" >
+          <a href="/add_project" class="layui-btn">建立</a>
+        </li>
+    
+        <li class="layui-nav-item" style="white-space: nowrap;">  
+          <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['user_name'] }}</a>
+          <dl class="layui-nav-child" style="text-align: left;">
+            <dd><a href="/chg_passwd">修改密碼</a></dd>
+            <dd><a href="/account_manage">帳戶管理</a></dd>
+            <dd><a href="/logout">登出</a></dd>
+          </dl>
+        </li>
+    </ul>
+    <br>
+    <h3>專案名稱={{project_option[0]['SID']}}</h3>
+    <table>
+      <tr>
+          <td>項目編號</td>
+          <td>工作項目</td> 
+          <td>進度百分比</td>
+          <td>開始時間</td>
+          <td>結束時間</td>
+          <td>操作</td>
+      </tr>
+
+      {% for option in project_option %}
+      <tr>
+        <td><p>{{ loop.index }}</p></td>
+        <td>{{option['option_value']}}</td>
+        <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
+      </tr>
+      {% endfor %}
+  
+  </table>
+
+</body> 
+
+
+</html>

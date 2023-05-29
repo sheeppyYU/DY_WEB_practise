@@ -41,7 +41,7 @@
       {% for process_project in work %}
       <tr>
         <td>{{process_project['SID']}}</td>
-        <td>{{process_project['project_name']}}</td>
+        <td><a href="/work_item/{{process_project.SID}}" >{{process_project['project_name']}}</a></td>
         <td>{{process_project['work_mode']}}</td>
         <td>{{process_project['start_time']}}</td>
         <td>{{process_project['expected_end_time']}}</td>

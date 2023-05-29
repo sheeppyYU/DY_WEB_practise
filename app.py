@@ -1,10 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session  
 import pymysql, os
 from datetime import datetime 
+from functools import wraps
 
 # 創建 Flask 應用程序
 app = Flask(__name__) # 建立物件
 app.secret_key = os.urandom(24)
+
+# 把確認有沒有session包成裝飾器
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'acc' not in session: 
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # 資料庫連接設定
 connect = pymysql.connect(host = '127.0.0.1',
@@ -41,7 +51,9 @@ def login():
 
 
 # index頁面路由
+@login_required
 @app.route('/index', methods=['GET', 'POST'])  
+
 def index():
     if 'acc' not in session:  # 如果用戶未登入，重定向到登入頁面
         return redirect(url_for('login'))
@@ -49,6 +61,7 @@ def index():
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM work_schedule")  # 查詢所有工作排程
         work = cursor.fetchall()  # 獲取查詢結果
+        print(work)
 
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM end_work")  # 查詢結案工作
@@ -58,5 +71,22 @@ def index():
     return render_template('index.html', work=work , finish_work=finish_work)  # 渲染index頁面，將工作排程傳遞給index頁面
 
 
+# 顯示大項目路由
+@login_required
+@app.route('/work_item/<SID>', methods=['GET', 'POST'])  
+def work_item(SID):
+    with connect.cursor() as cursor:
+        cursor.execute("SELECT * FROM project_option WHERE SID = %s",(SID,))  # 查詢所有工作排程
+        project_option = cursor.fetchall()  # 獲取查詢結果
+        print("AAAAAAAAAAAAAAA",project_option)
+
+    return render_template('work_item.html',SID=SID,project_option=project_option)  #
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True,port=5000)  # 運行Flask應用
+
+
+
