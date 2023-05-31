@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>work_option</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    </head>
+    <style>
+      /*設定表格最小高度*/
+      .option_table .layui-table-view {
+        min-height: 57px;  /* 這裡的150px是你想要的最小高度 */
+      }
+    </style>
+    
+<body>
+  <script src="/static/layui.js"></script>
+    <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+        <li style="display: flex; align-items: center;">
+          <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;" >
+          <a href="/add_project" class="layui-btn">建立</a>
+        </li>
+    
+        <li class="layui-nav-item" style="white-space: nowrap;">  
+          <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['user_name'] }}</a>
+          <dl class="layui-nav-child" style="text-align: left;">
+            <dd><a href="/chg_passwd">修改密碼</a></dd>
+            <dd><a href="/account_manage">帳戶管理</a></dd>
+            <dd><a href="/logout">登出</a></dd>
+          </dl>
+        </li>
+    </ul>
+    <br>
+    <!------------------------------------------------------------------------------------------>
+    <form class="layui-form" action="/work_option/{{SID}}" method="POST" id="work-form">
+      <div style="width: 800px; margin: 20px auto;" class = "option_table">
+    <table lay-filter="option_value_table">
+      <thead>
+        <tr>
+        <th lay-data="{field:'item_ID'}">項目編號</th>
+        <th lay-data="{field:'item'}">工作項目</th>
+        <th lay-data="{field:'item_percentage'}">進度百分比</th>
+        <th lay-data="{field:'item_start_time'}">開始時間</th>
+        <th lay-data="{field:'item_end_time'}">結束時間</th>
+        <th lay-data="{field:'option'}">操作</th>
+        </tr> 
+      </thead>
+      <tbody>
+        {% for option in project_option %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{option['option_value']}}</td>
+            <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
+            <td>{{option['option_start_time']}}</td>
+            <td>{{option['option_end_time'] if option['option_end_time'] else ''}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      
+    </table>
+    <br>
+      <a href="/add_work_option/{{SID}}" class="layui-btn">建立工作項目</a>
+      <a href="/index" class="layui-btn">返回</a>
+    </div>
+  </form>
+  
+  <script>
+    layui.use('form', function(){
+      var table = layui.table;
+    
+     table.init('option_value_table', {
+      limit: 10
+     });
+    });
+     function myFunction() {
+      var result = confirm("確定要刪除嗎");
+      if (result) {
+      return true;
+      } else{
+      return false;
+      }
+    }	 
+    </script>
+
+</body>
+</html>
