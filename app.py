@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pymysql, os
 from datetime import datetime 
 from functools import wraps
+import json
 
 # 創建 Flask 應用程序
 app = Flask(__name__) # 建立物件
@@ -44,6 +45,7 @@ def login():
         # 如果帳號或密碼為空，則顯示錯誤信息
         elif not account or not password:
             flash('帳密不能為空', 'error')
+            return redirect(url_for('index'))  #方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試
         else:  # 如果帳號或密碼錯誤，則顯示錯誤信息
             flash('帳密輸入錯誤', 'error')
 
@@ -55,13 +57,10 @@ def login():
 @app.route('/index', methods=['GET', 'POST'])  
 
 def index():
-    if 'acc' not in session:  # 如果用戶未登入，重定向到登入頁面
-        return redirect(url_for('login'))
-
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM work_schedule")  # 查詢所有工作排程
         work = cursor.fetchall()  # 獲取查詢結果
-        print(work)
+        # print(work)
 
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM end_work")  # 查詢結案工作
@@ -73,14 +72,53 @@ def index():
 
 # 顯示大項目路由
 @login_required
-@app.route('/work_item/<SID>', methods=['GET', 'POST'])  
-def work_item(SID):
+@app.route('/work_option/<SID>', methods=['GET', 'POST'])  
+def work_option(SID):
     with connect.cursor() as cursor:
-        cursor.execute("SELECT * FROM project_option WHERE SID = %s",(SID,))  # 查詢所有工作排程
+        cursor.execute("SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
-        print("AAAAAAAAAAAAAAA",project_option)
+    # print("AAAAAAAAAAAproject_option = " , project_option)
+    return render_template('work_option.html',SID=SID,project_option=project_option)  #
 
-    return render_template('work_item.html',SID=SID,project_option=project_option)  #
+
+# 建立大項目路由
+@login_required
+@app.route('/add_work_option/<SID>', methods=['GET', 'POST'])  
+def add_work_option(SID):
+    print("---------------------------------------------------------------------")
+    print("SID = " , SID)
+    with connect.cursor() as cursor:
+        cursor.execute("SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
+        project_option = cursor.fetchall()  # 獲取查詢結果
+
+    project_option_json = json.dumps(project_option)#轉為JSON ，用於JS判斷是否已重複
+
+
+
+
+    option_value = request.form.get('option')
+    option_start_time = request.form.get('option_start_time')
+    option_end_time = request.form.get('option_end_time')
+
+    option_percentage=''
+    
+    try:#方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試
+        print('SSSSSSSSSSSSSSSSSS',session['acc'])
+    except:
+        print("SSS NULLLLLLLLLLLLLLLL")
+
+    print('option_value',option_value,'start_time',option_start_time,'end_time',option_end_time)
+
+    if request.method == 'POST':  # 如果是POST請求，則處理表單提交
+        with connect.cursor() as cursor:
+
+            sql = f"INSERT INTO project_option (option_id, option_value, SID, option_percentage, option_start_time, option_end_time) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, ('', option_value, SID, option_percentage,option_start_time,option_end_time))
+            connect.commit()
+        return redirect(url_for('work_option', SID=SID))
+
+
+    return render_template('add_work_option.html' , project_option = project_option , SID = SID , project_option_json =project_option_json )  #
 
 
 
@@ -90,3 +128,105 @@ if __name__ == '__main__':
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#                    ___====-_  _-====___
+#              _--^^^     //      \\     ^^^--_
+#           _-^          // (    ) \\          ^-_
+#          -            //  |\^^/|  \\            -
+#        _/            //   (@::@)   \\            \_
+#       /             ((     \\//     ))             \
+#      -               \\    (oo)    //               -
+#     -                 \\  / VV \  //                 -
+#    -                   \\/      \//                   -
+#   _ /|          /\      (   /\   )      /\          |\ _
+#   |/ | /\ /\ /\/  \ /\  \  |  |  /  /\ /  \/\ /\ /\ | \|
+#     |/  V  V     V  \ \| |  | |/ /  V   '  V  V  \|  '
+#      `   `  `      `   / | |  | | \   '      '  '   '
+#                       (  | |  | |  )
+#                      __\ | |  | | /__
+#                     (vvv(VVV)(VVV)vvv)
+#                     神獸保佑，程式碼沒Bug!
+    
+
+
+
+#                                             __----~~~~~~~~~~~------___
+#                                     .  .   ~~//====......          __--~ ~~
+#                     -.            \_|//     |||\\  ~~~~~~::::... /~
+#                  ___-==_       _-~o~  \/    |||  \\            _/~~-
+#          __---~~~.==~||\=_    -_--~/_-~|-   |\\   \\        _/~
+#      _-~~     .=~    |  \\-_    '-~7  /-   /  ||    \      /
+#    .~       .~       |   \\ -_    /  /-   /   ||      \   /
+#   /  ____  /         |     \\ ~-_/  /|- _/   .||       \ /
+#   |~~    ~~|--~~~~--_ \     ~==-/   | \~--===~~        .\
+#            '         ~-|      /|    |-~\~~       __--~~
+#                        |-~~-_/ |    |   ~\_   _-~            /\
+#                             /  \     \__   \/~                \__
+#                         _--~ _/ | .-~~____--~-/                  ~~==.
+#                        ((->/~   '.|||' -_|    ~~-/ ,              . _||
+#                                   -_     ~\      ~~---l__i__i__i--~~_/
+#                                   _-~-__   ~)  \--______________--~~
+#                                 //.-~~~-~_--~- |-------~~~~~~~~
+#                                        //.-~~~--\
+#                                 神獸保佑，程式碼沒Bug!
+    
+
+
+#                                  |~~~~~~~|
+#                                  |       |
+#                                  |       |
+#                                  |       |
+#                                  |       |
+#                                  |       |
+#       |~.\\\_\~~~~~~~~~~~~~~xx~~~         ~~~~~~~~~~~~~~~~~~~~~/_//;~|
+#       |  \  o \_         ,XXXXX),                         _..-~ o /  |
+#       |    ~~\  ~-.     XXXXX`)))),                 _.--~~   .-~~~   |
+#        ~~~~~~~`\   ~\~~~XXX' _/ ';))     |~~~~~~..-~     _.-~ ~~~~~~~
+#                 `\   ~~--`_\~\, ;;;\)__.---.~~~      _.-~
+#                   ~-.       `:;;/;; \          _..-~~
+#                      ~-._      `''        /-~-~
+#                          `\              /  /
+#                            |         ,   | |
+#                             |  '        /  |
+#                              \/;          |
+#                               ;;          |
+#                               `;   .       |
+#                               |~~~-----.....|
+#                              | \             \
+#                              | /\~~--...__    |
+#                             (|  `\       __-\|
+#                             ||    \_   /~    |
+#                             |)     \~-'      |
+#                              |      | \      '
+#                              |      |  \    :
+#                               \     |  |    |
+#                                |    )  (    )
+#                                 \  /;  /\  |
+#                                 |    |/   |
+#                                 |    |   |
+#                                  \  .'  ||
+#                                  |  |  | |
+#                                  (  | |  |
+#                                  |   \ \ |
+#                                  || o `.)|
+#                                  |`\\\\) |
+#                                  |       |
+#                                  |       |
+#     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 
+#                       耶穌保佑                永無 BUG
