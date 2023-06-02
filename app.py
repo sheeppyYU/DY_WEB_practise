@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session  
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql, os
 from datetime import datetime 
 from functools import wraps
@@ -19,7 +19,7 @@ def login_required(f):
 
 # 資料庫連接設定
 connect = pymysql.connect(host = '127.0.0.1',
-                          user = 'ming',
+                          user = 'root',
                           password = '',
                           db = 'pydb',
                           charset = 'utf8',
@@ -70,18 +70,38 @@ def index():
     return render_template('index.html', work=work , finish_work=finish_work)  # 渲染index頁面，將工作排程傳遞給index頁面
 
 
-# 顯示大項目路由
+# "顯示"大項目路由
 @login_required
 @app.route('/work_option/<SID>', methods=['GET', 'POST'])  
 def work_option(SID):
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
-    # print("AAAAAAAAAAAproject_option = " , project_option)
-    return render_template('work_option.html',SID=SID,project_option=project_option)  #
+    
+        # print("project_option獲取查詢結果 = " , project_option)
+    return render_template('work_option.html', SID=SID, project_option=project_option)  #
 
+#  大項目"刪除"路由
+@app.route('/delete_option/<SID>/<option_id>', methods=['GET'])
+def delete_option(SID,option_id):
+    print("SIDSIDSIDISDISID",SID)
+    with connect.cursor() as cursor:
+        sql = f"DELETE FROM project_option WHERE option_id = %s"
+        
+        
+        try:
+            cursor.execute(sql, (option_id))
+            print("成功刪除啦QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+        except Exception as e:
+            print("刪除失敗:", e)
 
-# 建立大項目路由
+        connect.commit()
+
+    return redirect(url_for('work_option', SID=SID))
+    # return render_template('work_option.html', SID=SID)  #
+
+    
+# "建立"大項目路由
 @login_required
 @app.route('/add_work_option/<SID>', methods=['GET', 'POST'])  
 def add_work_option(SID):
@@ -93,32 +113,28 @@ def add_work_option(SID):
 
     project_option_json = json.dumps(project_option)#轉為JSON ，用於JS判斷是否已重複
 
-
-
-
     option_value = request.form.get('option')
     option_start_time = request.form.get('option_start_time')
     option_end_time = request.form.get('option_end_time')
+    print("ADDDD")
+    print(option_value,option_start_time,option_end_time)
 
-    option_percentage=''
-    
-    try:#方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試方便測試
-        print('SSSSSSSSSSSSSSSSSS',session['acc'])
-    except:
-        print("SSS NULLLLLLLLLLLLLLLL")
-
-    print('option_value',option_value,'start_time',option_start_time,'end_time',option_end_time)
+    # option_percentage=''
 
     if request.method == 'POST':  # 如果是POST請求，則處理表單提交
         with connect.cursor() as cursor:
 
             sql = f"INSERT INTO project_option (option_id, option_value, SID, option_percentage, option_start_time, option_end_time) VALUES (%s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, ('', option_value, SID, option_percentage,option_start_time,option_end_time))
+            cursor.execute(sql, ('', option_value, SID, '',option_start_time,option_end_time))
             connect.commit()
         return redirect(url_for('work_option', SID=SID))
 
 
     return render_template('add_work_option.html' , project_option = project_option , SID = SID , project_option_json =project_option_json )  #
+
+
+
+
 
 
 
