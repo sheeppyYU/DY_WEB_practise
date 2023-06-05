@@ -74,26 +74,29 @@ def index():
 @login_required
 @app.route('/work_option/<SID>', methods=['GET', 'POST'])  
 def work_option(SID):
+    session['SID'] = SID
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
     
         # print("project_option獲取查詢結果 = " , project_option)
+    # username = session['username']
     return render_template('work_option.html', SID=SID, project_option=project_option)  #
 
 #  大項目"刪除"路由
 @app.route('/delete_option/<SID>/<option_id>', methods=['GET'])
 def delete_option(SID,option_id):
-    print("SIDSIDSIDISDISID",SID)
+    
     with connect.cursor() as cursor:
         sql = f"DELETE FROM project_option WHERE option_id = %s"
         
         
         try:
             cursor.execute(sql, (option_id))
-            print("成功刪除啦QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+            # print("成功刪除啦QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
         except Exception as e:
-            print("刪除失敗:", e)
+            # print("刪除失敗:", e)
+            ''
 
         connect.commit()
 
@@ -107,6 +110,7 @@ def delete_option(SID,option_id):
 def add_work_option(SID):
     print("---------------------------------------------------------------------")
     print("SID = " , SID)
+    
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
@@ -116,8 +120,8 @@ def add_work_option(SID):
     option_value = request.form.get('option')
     option_start_time = request.form.get('option_start_time')
     option_end_time = request.form.get('option_end_time')
-    print("ADDDD")
-    print(option_value,option_start_time,option_end_time)
+    # print("ADDDD")
+    # print(option_value,option_start_time,option_end_time)
 
     # option_percentage=''
 
@@ -135,8 +139,69 @@ def add_work_option(SID):
 
 
 
+# # "點擊"大項目進入小項目路由
+@login_required
+@app.route('/add_option_item/<option_id>', methods=['GET', 'POST'])  
+def add_option_item(option_id):
+    
+    try:
+        session['option_name'] = False
+    except:
+        print("session['option_name']=空的")
+
+    with connect.cursor() as cursor:
+        sql = f"SELECT option_value FROM project_option WHERE option_id = %s"
+        cursor.execute(sql, (option_id,))
+        option_name = cursor.fetchone()
+        session['option_name'] = option_name
+    
+    if 'SID' in session:
+        option_name = session.get('option_name')  # 取得專案名字
+    else:
+        return redirect(url_for('index'))
 
 
+    with connect.cursor() as cursor:
+        
+        sql = f"SELECT * FROM option_item WHERE item_id = %s ORDER BY item_id ASC"
+        cursor.execute(sql, (option_id,))
+        option_item = cursor.fetchall()
+        
+
+        if option_item:
+            SID=option_item[0]['SID']
+            
+            return render_template('add_option_item.html', option_id = option_id , option_item=option_item, SID=SID, option_name=option_name)
+        else:
+            SID = session.get('SID')
+            return render_template('add_option_item.html',SID=SID,  option_name=option_name)
+
+        
+
+        
+
+
+
+
+# # "儲存"小項目路由
+# @login_required
+# @app.route('/item_save/<option_id>', methods=['GET', 'POST'])  
+# def add_option_item(option_id):
+#     item_values = request.form.getlist('item-value')
+#     item_getID = request.form.getlist('option_ID')
+#     percentage = int(request.form.get('percentage'))
+
+#     cursor = connect.cursor()
+#     for i in range(len(option_getID)):
+
+#         tempVar = "option" + str(i+1)
+#         tempRes = request.form.get(tempVar)
+#         sql = "UPDATE " + table_check + " SET is_checked = {} WHERE option_ID = {};".format(1 if tempRes=="on" else 0, option_getID[i])
+#         cursor.execute(sql)
+
+#     connect.commit()
+
+#     return render_template('add_option_item.html', option_id = option_id , option_item=option_item, SID=SID)
 
 
 if __name__ == '__main__':

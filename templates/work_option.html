@@ -40,8 +40,7 @@
   <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
-      <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;">
-      <a href="/add_project" class="layui-btn">建立</a>
+      <a href="/index"><img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"></a>
     </li>
 
     <li class="layui-nav-item" style="white-space: nowrap;">
@@ -73,7 +72,7 @@
           {% for option in project_option %}
           <tr>
             <td>{{ loop.index }}</td>
-            <td><a href="/add_option_item/{{option['option_value']}}" style="color:red;">{{option['option_value']}}</a></td>
+            <td><a href="/add_option_item/{{option['option_id']}}" style="color:red;">{{option['option_value']}}</a></td>
             <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
             <td>{{option['option_start_time']}}</td>
             <td>{{option['option_end_time'] if option['option_end_time'] else ''}}</td>
@@ -86,6 +85,7 @@
         </tbody>
       </table>
       <a href="/add_work_option/{{SID}}" class="layui-btn">建立工作項目</a>
+      <a href="/index" class="layui-btn">返回</a>
   </form>
   <br>
   <br>

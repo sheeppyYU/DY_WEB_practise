@@ -1,159 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>新增工作項目</title>
-    <link rel="stylesheet" href="/static/css/layui.css">
-    <script src="/static/layui.js"></script>
-    <style>
-      /* 為表單設定一個固定的寬度並使用自動邊距來置中它 */
-      #add_option {
-        width: 500px;
-        margin: 0 auto;
-      }
-  
-      /* 為了讓標籤和輸入元素在同一行，我們讓 .layui-form-item 元素成為flex容器，並置中其子元素 */
-      .layui-form-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-  
-      /* 為了在標籤和輸入元素之間創建一些空間，我們給 .layui-form-label 元素添加了右邊距 */
-      .layui-form-label {
-        margin-right: 10px;
-      }
-  
-      /*設定表格最小高度*/
-      .option_table .layui-table-view {
-        min-height: 57px;  /* 這裡的150px是你想要的最小高度 */
-      }
 
-        /* 水平置中表單及其內容 */
-      #form-container {
-        text-align: center;
-      }
-    </style>
-  </head>
-  
+<head>
+  <meta charset="UTF-8">
+  <title>新增工作項目</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+  <script src="/static/layui.js"></script>
+
+</head>
+
 <body>
   <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
-      <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;" >
+      <a href="/index"><img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"></a>
     </li>
 
-    <li class="layui-nav-item" style="white-space: nowrap;">  
-      <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['acc'] }}</a>
+    <li class="layui-nav-item" style="white-space: nowrap;">
+      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc'] }}</a>
       <dl class="layui-nav-child" style="text-align: left;">
         <dd><a href="/chg_passwd">修改密碼</a></dd>
         <dd><a href="/account_manage">帳戶管理</a></dd>
         <dd><a href="/logout">登出</a></dd>
       </dl>
     </li>
-</ul>
+  </ul>
 
-<br> 
-<br>
-<br>
-<br>
-<br>
-<!-- ---------------------------------------------------------------------------- -->
-
-<div id="form-container">
-<form class="layui-form" action="/add_work_option/{{SID}}" method="POST" id="add_option">
-  <div class="layui-form-item">
-      <label class="layui-form-label" for="select">工作項目:</label>
-      <div class="layui-input-block" style="width: 140px;">
-        <select id="select" lay-filter="selectFilter" name="option" lay-verify="required">
-          <option selected disabled>請選擇工作項目</option>
-          <option value="前期規劃">前期規劃</option>
-          <option value="現場工程">現場工程</option>
-          <option value="設備吊裝">設備吊裝</option>
-          <option value="貨櫃預置工程">貨櫃預置工程</option>
-          <option value="機電現場工程">機電現場工程</option>
-          <option value="貨櫃現場工程">貨櫃現場工程</option>
-          <option value="廠區現場工程">廠區現場工程</option>
-          </select>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <!-- ---------------------------------------------------------------------------- -->
+  <br>
+  <div style="width: 800px;height: 400px;margin: 20px auto;">
+    <h1>{{option_name.option_value}}</h1>
+    <form class="layui-form" action="/item_save/" method="POST" id="work-form">
+      <div class="layui-form" id="options-form">
+        <div class="layui-form-item" id="options-container">
+          <br>
+          {% for option_value in option_item %}
+          <!-- <h1>{{option_value.item_value}}</h1> -->
+          <div class="option" style="display: flex; align-items: center;">
+            <input type="checkbox" name="option" lay-filter="option-checkbox" lay-skin="primary" {{ 'checked' if
+              option_value.is_checked }}>
+            <input type="text" name="item-value" class="layui-input" placeholder="輸入工作細項" style="width: 50%;"
+              value="{{ option_value.item_value}}">
+            <button class="layui-btn layui-btn-sm layui-btn-danger remove-option">X</button>
+            
+          </div>
+          <br>
+          {% endfor %}
+        </div>
+        <div class="layui-form-item">
+          <button class="layui-btn" id="add-option" type="button">新增選項</button>
+          <button type="submit" value="Submit" class="layui-btn">儲存</button>
+          <a href="/work_option/{{SID}}" class="layui-btn">返回</a>
+        </div>
       </div>
-    </div>
-  <div class="layui-form-item">
-      <label class="layui-form-label">開始時間:</label>
-      <div class="layui-input-block" style="width: 140px;">
-      <input type="date" id="item_date1" name="option_start_time" class="layui-input" required lay-verify="required">  
-      </div>
+    </form>
   </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">結束時間:</label>
-    <div class="layui-input-block" style="width: 140px;">
-    <input type="date" id="item_date2" name="option_end_time" class="layui-input">  
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button type="submit" value="Submit" class="layui-btn" lay-submit ="">建立</button>
-      <a href="/work_option/{{SID}}" class="layui-btn">返回</a>
-    </div>
-  </div>
-</form>
-</div>
 
-<script>
-  
-  layui.use('form', function(){
-    var form = layui.form;
-    var table = layui.table;
-
-    form.verify({
-    required: function(value, item) {
-      if (value === '' || value === null || value === undefined) {
-        return '請選擇工作項目';
-      }
-    }
-  });
-
-    table.init('option_value_table', {
-      limit: 10
-     });
-
-        
-    
-    form.on('select(selectFilter)', function(data){
-      // 把 JSON 字串轉換成物件
-      var project_optionJ = JSON.parse('{{ project_option_json|safe }}');
-  
-      // 使用 map 函式來創建一個新陣列，該陣列只包含選項值
-      var option_valuesJ = project_optionJ.map(function(option){
-        return option['option_value'];
+  <script src="/static/layui.js"></script>
+  <script>
+    layui.use(['form', 'jquery'], function () {
+      var form = layui.form;
+      var $ = layui.jquery;
+      // 監聽checkbox變化
+      form.on('checkbox(option-checkbox)', function (data) {
+        console.log(data.elem.checked); // 輸出checkbox是否選中
       });
-  
-      // 檢查選擇的值是否存在於陣列中
-      if(option_valuesJ.includes(data.value)){
-        alert("已重複，請重新選擇");
-        // 將選擇的值重置為預設值
-        data.elem.value = data.elem.querySelector('option:disabled').value;
-        // 渲染表單以反映變更
-        form.render('select');
-      }
+      // 監聽移除按鈕點擊事件
+      $('#options-container').on('click', '.remove-option', function () {
+        var optionElement = $(this).parents('.option');
+        optionElement.next('br').remove();
+        optionElement.remove();
+      });
+      // 監聽新增選項按鈕點擊事件
+      $('#add-option').on('click', function () {
+        var optionHtml = `
+        <div class="option" style="display: flex; align-items: center;">
+          <input type="checkbox" name="option" lay-filter="option-checkbox" lay-skin="primary">
+          <input type="text" name="option-value" class="layui-input" placeholder="輸入工作細項" style="width: 50%;">
+          <button class="layui-btn layui-btn-sm layui-btn-danger remove-option">X</button>
+        </div>
+        <br>
+        `;
+        $('#options-container').append(optionHtml); // 新增選項
+        form.render(); // 重新渲染表單元素
+      });
+      // 提交表單時移除空的工作細項輸入框
+      $('#work-form').on('submit', function () {
+        $('#options-container .option').each(function () {
+          var optionValue = $(this).find('input[name="option-value"]').val();
+          var optionChecked = $(this).find('input[name="option"]').is(':checked') ? 1 : 0;
+          if (optionValue === '') {
+            $(this).remove();
+          }
+        });
+        // 判斷有值的checkbox被勾選後和全部的選項做百分比計算  
+        var selectedCheckboxes = $('#options-container input[type="checkbox"]:checked');
+        var selectedCount = selectedCheckboxes.length;
+        var totalCount = $('#options-container input[type="checkbox"]').length;
+        var percentage = ((selectedCount / totalCount) * 100).toFixed(0);
+        // 在頁面上顯示百分比
+        // alert('百分比: ' + percentage + '%');
+        $('<input>').attr({
+          type: 'hidden',
+          name: 'percentage',
+          value: percentage
+        }).appendTo('#work-form');
+      });
     });
     
-    // 將日期輸入值設為今天的日期
-    var today = new Date().toISOString().substr(0, 10);
-    document.getElementById("item_date1").value = today;
-    console.info("design by sheeppy>sheeppy2313131@gmail.com");
-  });
-
-
-  function myFunction() {
-      var result = confirm("確定要刪除嗎");
-      if (result) {
-      return true;
-      } else{
-      return false;
-      }
-    }	 
-
   </script>
 
-  </body>    
-  </html>
+
+</body>
+
+</html>
