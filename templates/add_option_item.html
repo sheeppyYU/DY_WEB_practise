@@ -15,7 +15,7 @@
   <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
-      <a href="/index"><img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"></a>
+      <div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
     </li>
 
     <li class="layui-nav-item" style="white-space: nowrap;">
@@ -41,9 +41,9 @@
       <div class="layui-form" id="options-form">
         <div class="layui-form-item" id="options-container">
           <br>
-          <h1>SID={{SID}}</h1>
+          <!-- <h1>SID={{SID}}</h1> -->
           <br>
-          <h2>Debug:　　{{option_item}}</h2>
+          <!-- <h2>Debug:　　{{option_item}}</h2> -->
           {% for option_value in option_item %}
           <!-- <h1>{{option_value.item_value}}</h1> -->
           <div class="option" style="display: flex; align-items: center;">
@@ -146,5 +146,7 @@
 
 
 </body>
+
+
 
 </html>

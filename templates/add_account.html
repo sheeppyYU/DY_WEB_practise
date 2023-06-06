@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>新增帳戶</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+  <style>
+    /* 設置頁腳的樣式 */
+    .footer {
+      background-color: #393D49;
+      /* 設置背景顏色為黑色 */
+      color: white;
+      /* 設置文字顏色為白色 */
+      padding: 20px;
+      /* 設置內邊距 */
+      text-align: center;
+      /* 設置文字居中對齊 */
+    }
+  </style>
+</head>
+
+<body>
+  <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+    <li style="display: flex; align-items: center;">
+      <div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
+    </li>
+
+    <li class="layui-nav-item" style="white-space: nowrap;">
+      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
+      <dl class="layui-nav-child" style="text-align: left;">
+        <dd><a href="/chg_passwd">修改密碼</a></dd>
+        <dd><a href="/account_manage">帳戶管理</a></dd>
+        <dd><a href="/logout">登出</a></dd>
+      </dl>
+    </li>
+  </ul>
+  <br>
+  <div style="width: 500px;height: 400px;margin: 170px auto;">
+    <form class="layui-form" action="add_account" method="POST">
+      <div class="layui-form-item">
+        <label class="layui-form-label">帳號:</label>
+        <div class="layui-input-block" style="width: 250px;">
+          <input type="text" name="acc_nu" required lay-verify="required" autocomplete="off" class="layui-input"
+            placeholder="輸入帳號">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">密碼:</label>
+        <div class="layui-input-block" style="width: 250px;">
+          <input type="password" name="passwd" required lay-verify="required" autocomplete="off" class="layui-input"
+            placeholder="輸入密碼">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">姓名:</label>
+        <div class="layui-input-block" style="width: 250px;">
+          <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input"
+            placeholder="輸入姓名">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label" for="select">部門:</label>
+        <div class="layui-input-block" style="width: 120px;">
+          <select id="department" name="department">
+            <option selected disabled>請選擇部門</option>
+            <option value="生產部">生產部</option>
+            <option value="工程部">工程部</option>
+            <option value="專案部">專案部</option>
+            <option value="品保部">品保部</option>
+            <option value="資材部">資材部</option>
+            <option value="管理部">管理部</option>
+            <option value="財務部">財務部</option>
+            <option value="業務部">業務部</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label" for="select">權限:</label>
+        <div class="layui-input-block" style="width: 120px;">
+          <select id="limits" name="limits">
+            <option selected disabled>請選擇權限</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button type="submit" value="Submit" class="layui-btn">建立</button>
+          <a href="/account_manage" class="layui-btn">返回</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <footer class="footer">
+    <p>Copyright© 2023 鼎硯工程實業有限公司</p>
+  </footer>
+  <script src="/static/layui.js"></script>
+  <script>
+    layui.use('form', function () {
+      var form = layui.form
+    });
+  </script>
+</body>
+
+</html>

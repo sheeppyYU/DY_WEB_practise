@@ -1,157 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <body>
-<head>
-  <meta charset="UTF-8">
-  <title>新增工作項目</title>
-  <link rel="stylesheet" href="/static/css/layui.css">
-  <script src="/static/layui.js"></script>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
-</head>
-<main>
-<style>
-  /* ...你的其他CSS... */
 
-  /* 為表單設定一個固定的寬度並使用自動邊距來置中它 */
-  #add_option {
-    width: 500px;
-    margin: 0 auto;
-  }
+  <head>
+    <meta charset="UTF-8">
+    <title>新增工作項目</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <script src="/static/layui.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
+  </head>
+  <main>
+    <style>
+      /* ...你的其他CSS... */
 
-  /* 為了讓標籤和輸入元素在同一行，我們讓 .layui-form-item 元素成為flex容器，並置中其子元素 */
-  .layui-form-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+      /* 為表單設定一個固定的寬度並使用自動邊距來置中它 */
+      #add_option {
+        width: 500px;
+        margin: 0 auto;
+      }
 
-  /* 為了在標籤和輸入元素之間創建一些空間，我們給 .layui-form-label 元素添加了右邊距 */
-  .layui-form-label {
-    margin-right: 10px;
-  }
+      /* 為了讓標籤和輸入元素在同一行，我們讓 .layui-form-item 元素成為flex容器，並置中其子元素 */
+      .layui-form-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-  /*設定表格最小高度*/
-  .option_table .layui-table-view {
-    min-height: 57px;
-    /* 這裡的150px是你想要的最小高度 */
-  }
+      /* 為了在標籤和輸入元素之間創建一些空間，我們給 .layui-form-label 元素添加了右邊距 */
+      .layui-form-label {
+        margin-right: 10px;
+      }
 
-  .footer {
-    background-color: #393D49;
-    /* 設置背景顏色為黑色 */
-    color: white;
-    /* 設置文字顏色為白色 */
-    padding: 20px;
-    /* 設置內邊距 */
-    text-align: center;
-    /* 設置文字居中對齊 */
-  }
-</style>
+      /*設定表格最小高度*/
+      .option_table .layui-table-view {
+        min-height: 57px;
+        /* 這裡的150px是你想要的最小高度 */
+      }
 
-
-  <!-- <script src="/static/layui.js" async ></script> -->
-  <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
-    <li style="display: flex; align-items: center;">
-      <a href="/index"><img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"></a>
-    </li>
-
-    <li class="layui-nav-item" style="white-space: nowrap;">
-      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc'] }}</a>
-      <dl class="layui-nav-child" style="text-align: left;">
-        <dd><a href="/chg_passwd">修改密碼</a></dd>
-        <dd><a href="/account_manage">帳戶管理</a></dd>
-        <dd><a href="/logout">登出</a></dd>
-      </dl>
-    </li>
-  </ul>
-
-  <br>
-  <h1>SID={{SID}}</h1>
-  <br>
-
-  <div style="margin: 20px 20px; text-align: center;">
-    <h2 class="layui-bg-cyan" style="width: 64%;margin: auto; padding: 1px; color: white;">{{SID_name.project_name}}</h2>
-  </div>
-
-  <form class="layui-form" action="/work_option/{{SID}}" method="POST" id="work-form">
-    <div style="width: 800px; margin: 20px auto;" class="option_table">
-      <table lay-filter="option_value_table">
-        <thead>
-          <tr>
-            <th lay-data="{field:'item_ID'}">項目編號</th>
-            <th lay-data="{field:'item'}">工作項目</th>
-            <th lay-data="{field:'item_percentage'}">進度百分比</th>
-            <th lay-data="{field:'item_start_time'}">開始時間</th>
-            <th lay-data="{field:'item_end_time'}">結束時間</th>
-            <th lay-data="{field:'option'}">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for option in project_option %}
-          <tr>
-            <td>{{ loop.index }}</td>
-            <td><a href="/add_option_item/{{option['option_id']}}" style="color:red;">{{option['option_value']}}</a>
-            </td>
-            <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
-            <td>{{option['option_start_time']}}</td>
-            <td>{{option['option_end_time'] if option['option_end_time'] else ''}}</td>
-            <td>
-              <a href="/delete_option/{{SID}}/{{option['option_id']}}" onclick="return myFunction()"
-                class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">刪除</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <a href="/add_work_option/{{SID}}" class="layui-btn">建立工作項目</a>
-      <a href="/index" class="layui-btn">返回</a>
-  </form>
-  <br>
-  <br>
-  <br>
-  <br>
-  <!-- ---------------------------------------------------------------------------- -->
+      .footer {
+        background-color: #393D49;
+        /* 設置背景顏色為黑色 */
+        color: white;
+        /* 設置文字顏色為白色 */
+        padding: 20px;
+        /* 設置內邊距 */
+        text-align: center;
+        /* 設置文字居中對齊 */
+      }
+    </style>
 
 
-  <script>
+    <!-- <script src="/static/layui.js" async ></script> -->
+    <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+      <li style="display: flex; align-items: center;">
+        <div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
+      </li>
 
-    layui.use('form', function () {
-      var form = layui.form;
-      var table = layui.table;
+      <li class="layui-nav-item" style="white-space: nowrap;">
+        <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc'] }}</a>
+        <dl class="layui-nav-child" style="text-align: left;">
+          <dd><a href="/chg_passwd">修改密碼</a></dd>
+          <dd><a href="/account_manage">帳戶管理</a></dd>
+          <dd><a href="/logout">登出</a></dd>
+        </dl>
+      </li>
+    </ul>
 
-      table.init('option_value_table', {
-        limit: 10
+    <br>
+    <h1>SID={{SID}}</h1>
+    <br>
+
+    <div style="margin: 20px 20px; text-align: center;">
+      <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">{{SID_name.project_name}}
+      </h2>
+    </div>
+
+    <form class="layui-form" action="/work_option/{{SID}}" method="POST" id="work-form">
+      <div style="width: 90%; margin: 20px auto;" class="option_table">
+        <table lay-filter="option_value_table">
+          <thead>
+            <tr>
+              <th lay-data="{field:'item_ID'}">項目編號</th>
+              <th lay-data="{field:'item'}">工作項目</th>
+              <th lay-data="{field:'item_percentage'}">進度百分比</th>
+              <th lay-data="{field:'item_start_time'}">開始時間</th>
+              <th lay-data="{field:'item_end_time'}">結束時間</th>
+              <th lay-data="{field:'option'}">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for option in project_option %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td><a href="/add_option_item/{{option['option_id']}}" style="color:red;">{{option['option_value']}}</a>
+              </td>
+              <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
+              <td>{{option['option_start_time']}}</td>
+              <td>{{option['option_end_time'] if option['option_end_time'] else ''}}</td>
+              <td>
+                <a href="/delete_option/{{option['option_id']}}" onclick="return myFunction()"
+                  class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">刪除</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="/add_work_option/{{SID}}" class="layui-btn">建立工作項目</a>
+        <a href="/index" class="layui-btn">返回</a>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- ---------------------------------------------------------------------------- -->
+
+
+    <script>
+
+      layui.use('form', function () {
+        var form = layui.form;
+        var table = layui.table;
+
+        table.init('option_value_table', {
+          limit: 10
+        });
+
+        // 將日期輸入值設為今天的日期
+        var today = new Date().toISOString().substr(0, 10);
+        document.getElementById("item_date1").value = today;
       });
 
-      // 將日期輸入值設為今天的日期
-      var today = new Date().toISOString().substr(0, 10);
-      document.getElementById("item_date1").value = today;
-    });
 
-
-    function myFunction() {
-      var result = confirm("確定要刪除嗎");
-      if (result) {
-        return true;
-      } else {
-        return false;
+      function myFunction() {
+        var result = confirm("確定要刪除嗎");
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
       }
-    }
 
-  </script>
-</main>
-<footer>
-  <div id="HomeFooter" class="footer" style="padding-top: 0px;">
+    </script>
+  </main>
 
-    <div id="FootDeclar" class="layui-row layui-col-space10">
-      <div id="FootDeclar_2" style="display: flex; align-items: center; justify-content: center;">
-        <img src="../static/LOGO.png" width="50px" style="margin-right: 15px;">
-        <p class="footer-p">Copyright© 2023　鼎硯工程實業有限公司</p>
-      </div>
-  
-    </div>
-  </div>
-</footer>
 
 </body>
 
