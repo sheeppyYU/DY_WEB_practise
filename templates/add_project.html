@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>新增專案</title>
+    <link rel="stylesheet" href="/static/css/layui.css"> 
+  </head>
+<body>
+  <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+    <li style="display: flex; align-items: center;">
+      <div><a href="/index"><img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"></a></div>
+    </li>
+
+    <li class="layui-nav-item" style="white-space: nowrap;">  
+      <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['acc_nu'] }}</a>
+      <dl class="layui-nav-child" style="text-align: left;">
+        <dd><a href="/chg_passwd">修改密碼</a></dd>
+        <dd><a href="/account_manage">帳戶管理</a></dd>
+        <dd><a href="/logout">登出</a></dd>
+      </dl>
+    </li>
+</ul>
+<br> 
+<div style="width: 500px;height: 400px;margin: 200px auto;">
+<form class="layui-form" action="/add_project" method="POST">
+  <div class="layui-form-item">
+    <label class="layui-form-label">專案代號:</label>
+    <div class="layui-input-block" style="width: 250px;">
+      <input type="text" name="SID" required
+      lay-verify="required" autocomplete="off"  
+      class="layui-input" placeholder="輸入專案代號">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">專案名稱:</label>
+    <div class="layui-input-block" style="width: 250px;">
+      <input type="text" name="project_name" required
+      lay-verify="required" autocomplete="off"  
+      class="layui-input" placeholder="輸入專案名稱">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label" for="select">狀態:</label>
+    <div class="layui-input-block" style="width: 120px;">
+      <select id="select" name="work_mode">
+        <option selected disabled>請選擇狀態</option>
+        <option value="進行中">進行中</option>
+        <option value="停工">停工</option>
+        <option value="待料">待料</option>
+        </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">開始時間:</label>
+    <div class="layui-input-block" style="width: 120px;">
+      <input type="date" id="date1" name="start_time" class="layui-input" required lay-verify="required">  
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">預計結束:</label>
+    <div class="layui-input-block" style="width: 120px;">
+    <input type="date" id="date2" name="expected_end_time" class="layui-input" required lay-verify="required">  
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">結束時間:</label>
+    <div class="layui-input-block" style="width: 120px;">
+      <input type="date" id="date3" name="end_time" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button type="submit" value="Submit" class="layui-btn">建立</button>
+      <a href="/index" class="layui-btn">返回</a>
+    </div>
+  </div>
+</form>
+</div>
+<script src="/static/layui.js"></script>
+<script>
+layui.use('form', function(){
+  var form = layui.form
+});
+var today = new Date().toISOString().substr(0, 10);
+  document.getElementById("date1").value = today;
+</script>
+</body>
+</html>

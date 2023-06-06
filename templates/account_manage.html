@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>帳戶管理表</title>
+	<link rel="stylesheet" href="/static/css/layui.css">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+	<style>
+		/* 設置頁腳的樣式 */
+		.footer {
+			background-color: #393D49;
+			/* 設置背景顏色為黑色 */
+			color: white;
+			/* 設置文字顏色為白色 */
+			padding: 20px;
+			/* 設置內邊距 */
+			text-align: center;
+			/* 設置文字居中對齊 */
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+		<li style="display: flex; align-items: center;">
+			<div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
+		</li>
+
+		<li class="layui-nav-item" style="white-space: nowrap;">
+			<a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
+			<dl class="layui-nav-child" style="text-align: left;">
+				<dd><a href="/chg_passwd">修改密碼</a></dd>
+				<dd><a href="/account_manage">帳戶管理</a></dd>
+				<dd><a href="/logout">登出</a></dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<div style="width: 1000px;height: 400px;margin: 20px auto;">
+		<table lay-filter="demo">
+			<thead>
+				<tr>
+					<th lay-data="{field:'acc_nu'}">帳號</th>
+					<th lay-data="{field:'passwd'}">密碼</th>
+					<th lay-data="{field:'name'}">姓名</th>
+					<th lay-data="{field:'department'}">部門</th>
+					<th lay-data="{field:'limits'}">權限</th>
+					<th lay-data="{field:'option'}">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for acc in display_acc %}
+				<tr>
+					<td>{{acc['acc_nu']}}</td>
+					<td>{{acc['passwd']}}</td>
+					<td>{{acc['name']}}</td>
+					<td>{{acc['department'] if acc['department'] else ''}}</td>
+					<td>{{acc['limits'] if acc['limits'] else ''}}</td>
+					<td>
+						<a href="/chg_account/{{acc.acc_nu}}" class="layui-icon layui-icon-edit"
+							style="font-size: 30px; color: #1E9FFF;" title="修改"></a>
+						<a href="/delete/{{acc.acc_nu}}" onclick="return myFunction()"
+							class="layui-icon layui-icon-delete" style="font-size: 30px; color: #ff1e1e;"
+							title="刪除"></a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="/add_account" class="layui-btn">建立帳戶</a>
+		<a href="/index" class="layui-btn">返回</a>
+	</div>
+	<footer class="footer">
+		<p>Copyright© 2023 鼎硯工程實業有限公司</p>
+	</footer>
+
+</body>
+<script src="/static/layui.js"></script>
+<script>
+	layui.use('form', function () {
+		var table = layui.table;
+
+		table.init('demo', {
+			height: 315
+			, limit: 10
+		});
+	});
+	function myFunction() {
+		var result = confirm("確定要刪除嗎");
+		if (result) {
+			return true;
+		} else {
+			return false;
+		}
+	}	 
+</script>
+
+</html>

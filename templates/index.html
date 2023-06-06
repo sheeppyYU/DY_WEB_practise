@@ -77,9 +77,9 @@
   <br>
   <!--------------進行中專案-------------->
   <div style="margin: 20px 20px; text-align: center;">
-    <h2 class="layui-bg-cyan" style="width: 77%;margin: auto; padding: 1px; color: white;">專案進度</h2>
+    <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">專案進度</h2>
   </div>
-  <div style="width: 75%;height: 350px;margin: 20px auto;">
+  <div style="width: 90%;height: 350px;margin: 20px auto;">
     <table lay-filter="project_table">
       <thead>
         <tr>
@@ -92,7 +92,7 @@
           <th lay-data="{field:'percent_complete'}">完成百分比</th>
           <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
           <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
-          <!-- <td>操作</td> -->
+          <th lay-data="{field:'option'}">操作</th>
         </tr>
       </thead>
       {% for process_project in work %}
@@ -105,22 +105,30 @@
         <td>{{process_project['expected_end_time']}}</td>
         <td>{{process_project['end_time']}}</td>
         <td>{{process_project['percent_complete'] or 0 }}%</td>
-        <td>{{process_project['estimated_working_day']}}</td>
-        <td>{{process_project['actual_working_day']}}</td>
+        <td>{{process_project['estimated_working_day']}}天</td>
+        <td>{{process_project['actual_working_day']}}天</td>
+        <td>
+          <a href="/chg_project/{{process_project.SID}}" class="layui-icon layui-icon-edit"
+            style="font-size: 30px; color: #1E9FFF;" title="修改"></a>
+          <a href="/delete_work/{{process_project.SID}}" onclick="return myFunction()" class="layui-icon layui-icon-delete"
+            style="font-size: 30px; color: #ff1e1e;" title="刪除"></a>
+        </td>
       </tr>
       {% endfor %}
-
+      
     </table>
+    <a href="/add_project" class="layui-btn">建立</a>
   </div>
-  <br>
-  <br>
 
+  
+  <br>
+  <br>
   <!--------------已完成專案-------------->
   <div style="margin: 20px 20px; text-align: center;">
-    <h2 class="layui-bg-cyan" style="width: 77%;margin: auto; padding: 1px; color: white;">已結案</h2>
+    <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">已結案</h2>
   </div>
 
-  <div style="width: 75%;height: 350px;margin: 20px auto;">
+  <div style="width: 90%;height: 350px;margin: 20px auto;">
     <table lay-filter="project_table">
       <thead>
         <tr>
@@ -146,8 +154,8 @@
         <td>{{end_project['expected_end_time']}}</td>
         <td>{{end_project['end_time']}}</td>
         <td>{{ end_project['percent_complete'] or 0 }}%</td>
-        <td>{{end_project['estimated_working_day']}}</td>
-        <td>{{end_project['actual_working_day']}}</td>
+        <td>{{end_project['estimated_working_day']}}天</td>
+        <td>{{end_project['actual_working_day']}}天</td>
       </tr>
       {% endfor %}
 
