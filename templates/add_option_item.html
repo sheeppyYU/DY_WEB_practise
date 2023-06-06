@@ -6,9 +6,11 @@
   <title>新增工作項目</title>
   <link rel="stylesheet" href="/static/css/layui.css">
   <script src="/static/layui.js"></script>
-
+  <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
 </head>
+<style>
 
+</style>
 <body>
   <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
@@ -39,15 +41,18 @@
       <div class="layui-form" id="options-form">
         <div class="layui-form-item" id="options-container">
           <br>
+          <h1>SID={{SID}}</h1>
+          <br>
+          <h2>Debug:　　{{option_item}}</h2>
           {% for option_value in option_item %}
           <!-- <h1>{{option_value.item_value}}</h1> -->
           <div class="option" style="display: flex; align-items: center;">
             <input type="checkbox" name="option" lay-filter="option-checkbox" lay-skin="primary" {{ 'checked' if
               option_value.is_checked }}>
-            <input type="text" name="item-value" class="layui-input" placeholder="輸入工作細項" style="width: 50%;"
-              value="{{ option_value.item_value}}">
+            <input type="text" name="item-value" id="old{{option_value.id}}" class="layui-input" placeholder="輸入工作細項"
+              style="width: 50%;" value="{{ option_value.item_value}}">
             <button class="layui-btn layui-btn-sm layui-btn-danger remove-option">X</button>
-            
+
           </div>
           <br>
           {% endfor %}
@@ -77,42 +82,66 @@
         optionElement.remove();
       });
       // 監聽新增選項按鈕點擊事件
+      var newcount = 1;
       $('#add-option').on('click', function () {
         var optionHtml = `
-        <div class="option" style="display: flex; align-items: center;">
-          <input type="checkbox" name="option" lay-filter="option-checkbox" lay-skin="primary">
-          <input type="text" name="option-value" class="layui-input" placeholder="輸入工作細項" style="width: 50%;">
-          <button class="layui-btn layui-btn-sm layui-btn-danger remove-option">X</button>
-        </div>
-        <br>
-        `;
+    <div class="option" style="display: flex; align-items: center;">
+      <input type="checkbox" name="option" lay-filter="option-checkbox" lay-skin="primary">
+      <input type="text" name="item-value" id="new${(newcount)}"  class="layui-input" placeholder="輸入工作細項" style="width: 50%;">
+      <button class="layui-btn layui-btn-sm layui-btn-danger remove-option">X</button>
+    </div>
+    <br>
+  `;
         $('#options-container').append(optionHtml); // 新增選項
         form.render(); // 重新渲染表單元素
+        newcount++
       });
       // 提交表單時移除空的工作細項輸入框
-      $('#work-form').on('submit', function () {
+      $('#work-form').on('submit', function (event) {
+        event.preventDefault();
+
+        var data = {
+          "old": [],
+          "new": []
+        };
+
         $('#options-container .option').each(function () {
-          var optionValue = $(this).find('input[name="option-value"]').val();
-          var optionChecked = $(this).find('input[name="option"]').is(':checked') ? 1 : 0;
-          if (optionValue === '') {
-            $(this).remove();
+          var id = $(this).find('input[type="text"]').attr('id');
+          var value = $(this).find('input[type="text"]').val();
+          var checked = $(this).find('input[type="checkbox"]').is(':checked') ? 1 : 0;
+          if (value !== '') { // 排除空值
+            if (id.startsWith("old")) {
+              data.old.push({ "id": id, "value": value, "checked": checked });
+            } else if (id.startsWith("new")) {
+              data.new.push({ "id": id, "value": value, "checked": checked });
+            }
           }
         });
+
+        $('<input>').attr({
+          type: 'hidden',
+          name: 'data',
+          value: JSON.stringify(data)
+        }).appendTo('#work-form');
+
         // 判斷有值的checkbox被勾選後和全部的選項做百分比計算  
         var selectedCheckboxes = $('#options-container input[type="checkbox"]:checked');
         var selectedCount = selectedCheckboxes.length;
         var totalCount = $('#options-container input[type="checkbox"]').length;
         var percentage = ((selectedCount / totalCount) * 100).toFixed(0);
+        alert('完成度:'+percentage+"%")
         // 在頁面上顯示百分比
-        // alert('百分比: ' + percentage + '%');
         $('<input>').attr({
           type: 'hidden',
           name: 'percentage',
           value: percentage
         }).appendTo('#work-form');
+
+        this.submit(); // 手動提交表單
       });
+      this.submit(); // 手動提交表單
     });
-    
+
   </script>
 
 
