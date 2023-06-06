@@ -55,24 +55,25 @@
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
   <title>首頁</title>
   <link rel="stylesheet" href="/static/css/layui.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
 </head>
 
 <body>
 
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
-      <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;" >
+      <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;">
     </li>
 
-    <li class="layui-nav-item" style="white-space: nowrap;">  
-      <a href="javascript:;" style="color: rgb(255, 255, 255);" >{{ session['acc_nu'] }}</a>
+    <li class="layui-nav-item" style="white-space: nowrap;">
+      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
       <dl class="layui-nav-child" style="text-align: left;">
         <dd><a href="/chg_passwd">修改密碼</a></dd>
         <dd><a href="/account_manage">帳戶管理</a></dd>
         <dd><a href="/logout">登出</a></dd>
       </dl>
     </li>
-</ul>
+  </ul>
   <br>
   <!--------------進行中專案-------------->
   <div style="margin: 20px 20px; text-align: center;">
@@ -83,7 +84,7 @@
       <thead>
         <tr>
           <th lay-data="{field:'SID'}">專案ID</th>
-          <th lay-data="{field:'project_name'}" >專案名稱</th>
+          <th lay-data="{field:'project_name'}">專案名稱</th>
           <th lay-data="{field:'work_mode'}">狀態</th>
           <th lay-data="{field:'start_time'}">開始時間</th>
           <th lay-data="{field:'expected_end_time'}">預計結束時間</th>
@@ -97,7 +98,8 @@
       {% for process_project in work %}
       <tr>
         <td>{{process_project['SID']}}</td>
-        <td><a href="/work_option/{{process_project.SID}}"  style="color:red;">{{process_project['project_name']}}</a></td>
+        <td><a href="/work_option/{{process_project.SID}}" style="color:red;">{{process_project['project_name']}}</a>
+        </td>
         <td>{{process_project['work_mode']}}</td>
         <td>{{process_project['start_time']}}</td>
         <td>{{process_project['expected_end_time']}}</td>
@@ -172,12 +174,17 @@
 
 </body>
 
-<footer class="footer">
-  <p>Copyright© 2023　鼎硯工程實業有限公司</p>
-</footer>
 
-<script>
-  console.info("design by sheeppy>sheeppy2313131@gmail.com");
-</script>
+
+<div id="HomeFooter" class="footer" style="padding-top: 0px;">
+
+  <div id="FootDeclar" class="layui-row layui-col-space10">
+    <div id="FootDeclar_2" style="display: flex; align-items: center; justify-content: center;">
+      <img src="../static/LOGO.png" width="50px" style="margin-right: 15px;">
+      <p class="footer-p">Copyright© 2023　鼎硯工程實業有限公司</p>
+    </div>
+
+  </div>
+</div>
 
 </html>

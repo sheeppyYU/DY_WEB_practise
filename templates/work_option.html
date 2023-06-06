@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<body>
 <head>
   <meta charset="UTF-8">
   <title>新增工作項目</title>
   <link rel="stylesheet" href="/static/css/layui.css">
   <script src="/static/layui.js"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
 </head>
-
+<main>
 <style>
   /* ...你的其他CSS... */
 
@@ -34,9 +35,20 @@
     min-height: 57px;
     /* 這裡的150px是你想要的最小高度 */
   }
+
+  .footer {
+    background-color: #393D49;
+    /* 設置背景顏色為黑色 */
+    color: white;
+    /* 設置文字顏色為白色 */
+    padding: 20px;
+    /* 設置內邊距 */
+    text-align: center;
+    /* 設置文字居中對齊 */
+  }
 </style>
 
-<body>
+
   <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
@@ -54,6 +66,12 @@
   </ul>
 
   <br>
+  <h1>SID={{SID}}</h1>
+  <br>
+
+  <div style="margin: 20px 20px; text-align: center;">
+    <h2 class="layui-bg-cyan" style="width: 64%;margin: auto; padding: 1px; color: white;">{{SID_name.project_name}}</h2>
+  </div>
 
   <form class="layui-form" action="/work_option/{{SID}}" method="POST" id="work-form">
     <div style="width: 800px; margin: 20px auto;" class="option_table">
@@ -72,7 +90,8 @@
           {% for option in project_option %}
           <tr>
             <td>{{ loop.index }}</td>
-            <td><a href="/add_option_item/{{option['option_id']}}" style="color:red;">{{option['option_value']}}</a></td>
+            <td><a href="/add_option_item/{{option['option_id']}}" style="color:red;">{{option['option_value']}}</a>
+            </td>
             <td>{{option['option_percentage'] ~ ' %' if option['option_percentage'] else '0%'}}</td>
             <td>{{option['option_start_time']}}</td>
             <td>{{option['option_end_time'] if option['option_end_time'] else ''}}</td>
@@ -120,7 +139,21 @@
     }
 
   </script>
+</main>
+<footer>
+  <div id="HomeFooter" class="footer" style="padding-top: 0px;">
+
+    <div id="FootDeclar" class="layui-row layui-col-space10">
+      <div id="FootDeclar_2" style="display: flex; align-items: center; justify-content: center;">
+        <img src="../static/LOGO.png" width="50px" style="margin-right: 15px;">
+        <p class="footer-p">Copyright© 2023　鼎硯工程實業有限公司</p>
+      </div>
+  
+    </div>
+  </div>
+</footer>
 
 </body>
+
 
 </html>
