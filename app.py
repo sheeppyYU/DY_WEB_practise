@@ -67,7 +67,6 @@ def login():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    print('session==========',session)
     with connect.cursor() as cursor:
         cursor.execute("SELECT * FROM work_schedule")  # 查詢所有工作排程
         work = cursor.fetchall()  # 獲取查詢結果
@@ -324,8 +323,6 @@ def work_option(SID):
 
     session['SID'] = SID
     session['SID_name'] = SID_name
-    print("---------------------------------------------------------------------")
-    print("SID = ", SID)
     with connect.cursor() as cursor:
         cursor.execute(
             "SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
@@ -416,7 +413,7 @@ def add_option_item(option_id):
         sql = f"SELECT * FROM option_item WHERE item_id = %s ORDER BY item_id ASC"
         cursor.execute(sql, (option_id,))
         option_item = cursor.fetchall()
-        print('option_item==========', option_item)
+        
         if option_item:
             SID = option_item[0]['SID']
 
@@ -432,29 +429,61 @@ def add_option_item(option_id):
 @login_required
 def item_save():
 
+    delete_id=[]
     data = json.loads(request.form.get('data'))
     old_data = data.get('old', [])
+    # print("old_data old_data old_data:",old_data)
     new_data = data.get('new', [])
     percentage = request.form.get('percentage')
     option_id = session.get('option_id')
     SID = session.get('SID')
+
+
+
+
     with connect.cursor() as cursor:
-        print("BBB")
+        sql = f"SELECT * FROM option_item WHERE item_id = %s ORDER BY item_id ASC"
+        cursor.execute(sql, (option_id,))
+        all_option_item = cursor.fetchall()
+        print('AAAAAAAAAAAAAAAAAA',all_option_item)
+
+# ---------------------
+    
+    with connect.cursor() as cursor:
+        
         for old_item in old_data:
             id = old_item['id'].replace('old', '')
+            print("現在有的id=",id) 
+            delete_id.append(id)
             sql = "UPDATE `option_item` SET `item_value`=%s, `is_checked`=%s WHERE `id`=%s"
             cursor.execute(sql, (old_item['value'], old_item['checked'], id))
 
         for new_item in new_data:
             id = new_item['id'].replace('new', '')
-            print("idididid=", id)
+            # print("idididid=", id)
             sql = "INSERT INTO `option_item` (`item_id`, `item_value`, `is_checked`, `SID`) VALUES (%s, %s, %s, %s)"
             cursor.execute(
                 sql, (option_id, new_item['value'], new_item['checked'], SID))
 
         sql = "UPDATE `project_option` SET `option_percentage`=%s WHERE `option_id`=%s"
         cursor.execute(sql, (percentage, option_id))
+
     connect.commit()
+
+    target_ids = [item['id'] for item in all_option_item if str(item['id']) not in delete_id]
+    print("target_ids===",target_ids)
+
+    for i in target_ids:
+        print(i)#這是要刪掉的ID
+        with connect.cursor() as cursor:
+            sql = "DELETE FROM `option_item` WHERE `id`=%s"
+            cursor.execute(sql, (i))
+
+
+    connect.commit()
+
+
+
     return redirect(url_for('work_option', SID=SID))
 
 if __name__ == '__main__':

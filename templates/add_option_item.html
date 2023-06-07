@@ -12,14 +12,13 @@
 
 </style>
 <body>
-  <!-- <script src="/static/layui.js" async ></script> -->
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
-      <div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
+      <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;">
     </li>
 
     <li class="layui-nav-item" style="white-space: nowrap;">
-      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc'] }}</a>
+      <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
       <dl class="layui-nav-child" style="text-align: left;">
         <dd><a href="/chg_passwd">修改密碼</a></dd>
         <dd><a href="/account_manage">帳戶管理</a></dd>
@@ -27,8 +26,8 @@
       </dl>
     </li>
   </ul>
-
   <br>
+
   <br>
   <br>
   <br>
