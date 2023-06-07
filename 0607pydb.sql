@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-06-06 09:48:36
+-- 產生時間： 2023-06-07 07:16:07
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -40,8 +40,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`acc_nu`, `passwd`, `name`, `department`, `limits`) VALUES
-('0', '0', '0', '管理部', 3),
-('王八蛋', '0', 'admin', '資材部', 1);
+('0', '0', '0', '管理部', 3);
 
 -- --------------------------------------------------------
 
@@ -83,6 +82,17 @@ CREATE TABLE `option_item` (
   `SID` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- 傾印資料表的資料 `option_item`
+--
+
+INSERT INTO `option_item` (`id`, `item_id`, `item_value`, `is_checked`, `SID`) VALUES
+(20, 17, '4', 1, 'kh01'),
+(26, 17, '9', 1, 'kh01'),
+(27, 17, '10', 1, 'kh01'),
+(28, 17, '11', 0, 'kh01'),
+(29, 17, '12', 1, 'kh01');
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +107,14 @@ CREATE TABLE `project_option` (
   `option_start_time` varchar(80) DEFAULT NULL,
   `option_end_time` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `project_option`
+--
+
+INSERT INTO `project_option` (`option_id`, `option_value`, `SID`, `option_percentage`, `option_start_time`, `option_end_time`) VALUES
+(17, '前期規劃', 'kh01', 80, '2023-06-07', ''),
+(18, '現場工程', 'kh01', 0, '2023-06-07', '');
 
 -- --------------------------------------------------------
 
@@ -169,13 +187,13 @@ ALTER TABLE `work_schedule`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `option_item`
 --
 ALTER TABLE `option_item`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `project_option`
 --
 ALTER TABLE `project_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 已傾印資料表的限制式
