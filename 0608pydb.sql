@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-06-07 07:16:07
+-- 產生時間： 2023-06-08 10:45:06
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -40,7 +40,8 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`acc_nu`, `passwd`, `name`, `department`, `limits`) VALUES
-('0', '0', '0', '管理部', 3);
+('0', '0', '0', '管理部', 3),
+('1', '1', '1', '生產部', 1);
 
 -- --------------------------------------------------------
 
@@ -87,11 +88,14 @@ CREATE TABLE `option_item` (
 --
 
 INSERT INTO `option_item` (`id`, `item_id`, `item_value`, `is_checked`, `SID`) VALUES
-(20, 17, '4', 1, 'kh01'),
 (26, 17, '9', 1, 'kh01'),
 (27, 17, '10', 1, 'kh01'),
-(28, 17, '11', 0, 'kh01'),
-(29, 17, '12', 1, 'kh01');
+(28, 17, '11', 1, 'kh01'),
+(29, 17, '12', 1, 'kh01'),
+(30, 17, '13', 1, 'kh01'),
+(31, 19, '細項一111', 1, 'kh02'),
+(35, 17, '14', 1, 'kh01'),
+(36, 17, '15', 1, 'kh01');
 
 -- --------------------------------------------------------
 
@@ -113,8 +117,14 @@ CREATE TABLE `project_option` (
 --
 
 INSERT INTO `project_option` (`option_id`, `option_value`, `SID`, `option_percentage`, `option_start_time`, `option_end_time`) VALUES
-(17, '前期規劃', 'kh01', 80, '2023-06-07', ''),
-(18, '現場工程', 'kh01', 0, '2023-06-07', '');
+(17, '前期規劃', 'kh01', 100, '2023-06-07', ''),
+(18, '現場工程', 'kh01', 0, '2023-06-07', ''),
+(19, '前期規劃', 'kh02', 100, '2023-06-08', ''),
+(20, '貨櫃現場工程', 'kh02', 0, '2023-06-08', ''),
+(21, '現場工程', 'kh02', 0, '2023-06-08', ''),
+(22, '設備吊裝', 'kh02', 0, '2023-06-08', ''),
+(25, '設備吊裝', 'kh01', 0, '2023-06-08', ''),
+(26, '貨櫃現場工程', 'kh01', 0, '2023-06-08', '');
 
 -- --------------------------------------------------------
 
@@ -139,7 +149,8 @@ CREATE TABLE `work_schedule` (
 --
 
 INSERT INTO `work_schedule` (`SID`, `project_name`, `work_mode`, `start_time`, `expected_end_time`, `end_time`, `percent_complete`, `estimated_working_day`, `actual_working_day`) VALUES
-('kh01', '測試專案一', '進行中', '2023-06-06', '2023-06-22', '2023-06-23', NULL, '16', '17');
+('kh01', '測試專案一', '進行中', '2023-06-06', '2023-06-22', '2023-06-23', 25, '16', '17'),
+('kh02', '測試專案二', '進行中', '2023-06-08', '2023-07-01', '2023-06-30', 25, '23', '22');
 
 --
 -- 已傾印資料表的索引
@@ -187,13 +198,13 @@ ALTER TABLE `work_schedule`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `option_item`
 --
 ALTER TABLE `option_item`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `project_option`
 --
 ALTER TABLE `project_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- 已傾印資料表的限制式

@@ -328,6 +328,27 @@ def work_option(SID):
             "SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
 
+    project_order = ['前期規劃', '現場工程', '設備吊裝', '貨櫃預置工程', '機電現場工程', '貨櫃現場工程', '廠區現場工程']
+    try:
+        project_option.sort(key=lambda x: project_order.index(x['option_value']))
+    except:
+        ''
+    
+
+# 計算大項目完成%數，顯示在work_schedule----------------------------------------------
+    all_work_schedule_percentage=0
+    for i in project_option:
+        all_work_schedule_percentage += i["option_percentage"]
+    try:
+        work_schedule_percentage = round(all_work_schedule_percentage / len(project_option))
+
+    except:
+        work_schedule_percentage = 0
+    with connect.cursor() as cursor:
+        sql = "UPDATE work_schedule SET percent_complete = %s WHERE SID = %s"
+        cursor.execute(sql, (work_schedule_percentage, SID))
+        connect.commit()
+
     return render_template('work_option.html', SID=SID, project_option=project_option, SID_name=SID_name)
 
 #  大項目"刪除"路由-------------------------------------------------------------------------------------------------------
@@ -487,8 +508,8 @@ def item_save():
     return redirect(url_for('work_option', SID=SID))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)  # 運行Flask應用
-
+    # app.run(debug=True, port=5000)  # 運行Flask應用
+    app.run(debug=True, host="0.0.0.0", port=5000)
 
 #                    ___====-_  _-====___
 #              _--^^^     //      \\     ^^^--_
