@@ -11,6 +11,7 @@
 <style>
 
 </style>
+
 <body>
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
@@ -124,11 +125,15 @@
         }).appendTo('#work-form');
 
         // 判斷有值的checkbox被勾選後和全部的選項做百分比計算  
-        var selectedCheckboxes = $('#options-container input[type="checkbox"]:checked');
+        var validCheckboxes = $('#options-container .option').filter(function () {
+          return $(this).find('input[type="text"]').val() !== "";
+        }).find('input[type="checkbox"]');
+
+        var selectedCheckboxes = validCheckboxes.filter(':checked');
         var selectedCount = selectedCheckboxes.length;
-        var totalCount = $('#options-container input[type="checkbox"]').length;
+        var totalCount = validCheckboxes.length;
         var percentage = ((selectedCount / totalCount) * 100).toFixed(0);
-        alert('完成度:'+percentage+"%")
+        alert('完成度:' + percentage + "%");
         // 在頁面上顯示百分比
         $('<input>').attr({
           type: 'hidden',
