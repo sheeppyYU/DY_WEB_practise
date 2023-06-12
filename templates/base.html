@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .layui-fluid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .layui-col-md4 {
+        width: 100%;
+        /* For mobile phones: */
+        max-width: 300px;
+    }
+
+    @media only screen and (min-width: 600px) {
+        .layui-col-md4 {
+            text-align: center;
+            width: 20%;
+            max-width: 300px;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        .layui-col-md4 {
+            width: 33.33%;
+            max-width: 300px;
+        }
+    }
+
+    .layui-panel {
+        height: 100%;
+        margin: 10px;
+    }
+
+    .layui-nav {
+        background-color: #393D49;
+        /* 換成你想要的背景顏色 */
+    }
+
+    /* 設置頁腳的樣式 */
+    .footer {
+        background-color: #393D49;
+        /* 設置背景顏色為黑色 */
+        color: white;
+        /* 設置文字顏色為白色 */
+        padding: 20px;
+        /* 設置內邊距 */
+        text-align: center;
+        /* 設置文字居中對齊 */
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta http-equiv="refresh" content="2"> -->
+    <title>首頁</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
+</head>
+
+<body>
+{% block acc %}
+    <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
+        <li style="display: flex; align-items: center;">
+            <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;">
+        </li>
+
+        <li class="layui-nav-item" style="white-space: nowrap; margin-right: 30px;">
+            <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
+            <dl class="layui-nav-child" style="text-align: left; ">
+                <dd><a href="/chg_passwd">修改密碼</a></dd>
+                <dd><a href="/account_manage">帳戶管理</a></dd>
+                <dd><a href="/logout">登出</a></dd>
+            </dl>
+        </li>
+    </ul>
+    <br>
+    {% endblock acc %}
+    
+
+
+    <script src="/static/layui.js"></script>
+    <script>
+        setTimeout(() => {
+            document.location.reload();
+        }, 60000);
+    </script>
+
+</body>
+
+
+
+<div id="HomeFooter" class="footer" style="padding-top: 0px;">
+
+    <div id="FootDeclar" class="layui-row layui-col-space10">
+        <div id="FootDeclar_2" style="display: flex; align-items: center; justify-content: center;">
+            <img src="../static/LOGO.png" width="50px" style="margin-right: 15px;">
+            <p class="footer-p">Copyright© 2023　鼎硯工程實業有限公司</p>
+        </div>
+
+    </div>
+</div>
+
+</html>
