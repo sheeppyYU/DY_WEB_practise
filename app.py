@@ -76,11 +76,11 @@ def login():
 @login_required
 def index():
     with connect.cursor() as cursor:
-        cursor.execute("SELECT * FROM work_schedule")  # 查詢所有工作排程
+        cursor.execute("SELECT * FROM work_schedule WHERE state = 0")  # 查詢所有工作排程
         work = cursor.fetchall()  # 獲取查詢結果
 
     with connect.cursor() as cursor:
-        cursor.execute("SELECT * FROM end_work")  # 查詢結案工作
+        cursor.execute("SELECT * FROM work_schedule WHERE state = 1")  # 查詢結案工作
         finish_work = cursor.fetchall()  # 獲取查詢結果
 
     # 渲染index頁面，將工作排程傳遞給index頁面
@@ -238,8 +238,8 @@ def add_project():
             actual_working_day = (date3 - date1).days
 
         with connect.cursor() as cursor:
-            sql = "INSERT INTO work_schedule (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day))
+            sql = "INSERT INTO work_schedule (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, state) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, 0))
             connect.commit()
         
         return redirect(url_for('index'))
@@ -514,6 +514,24 @@ def item_save():
 
 
     return redirect(url_for('work_option', SID=SID))
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# 首頁-進行中專案轉去結案
+
+@app.route('/finish_project/<SID>', methods=['GET', 'POST'])
+@login_required
+def finish_project(SID):
+    with connect.cursor() as cursor:
+        sql = "UPDATE work_schedule set state = %s WHERE SID = %s"
+        cursor.execute(sql, (1,SID))
+        connect.commit()
+
+
+    return redirect(url_for('index'))
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 if __name__ == '__main__':
     # app.run(debug=True, port=5000)  # 運行Flask應用
