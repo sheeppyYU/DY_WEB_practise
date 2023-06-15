@@ -84,13 +84,13 @@
     <table lay-filter="project_table">
       <thead>
         <tr>
-          <th lay-data="{field:'SID'}">專案ID</th>
+          <th lay-data="{field:'SID', width: 80}">專案ID</th>
           <th lay-data="{field:'project_name'}">專案名稱</th>
           <th lay-data="{field:'work_mode'}">狀態</th>
           <th lay-data="{field:'start_time'}">開始時間</th>
           <th lay-data="{field:'expected_end_time'}">預計結束時間</th>
           <th lay-data="{field:'end_time'}">結束時間</th>
-          <th lay-data="{field:'percent_complete'}">完成百分比</th>
+          <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
           <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
           <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
           <th lay-data="{field:'option'}">操作</th>
@@ -115,8 +115,14 @@
         <td>
           <a href="/chg_project/{{process_project.SID}}" class="layui-icon layui-icon-edit"
             style="font-size: 30px; color: #1E9FFF;" title="修改"></a>
+
           <a href="/delete_work/{{process_project.SID}}" onclick="return myFunction()"
             class="layui-icon layui-icon-delete" style="font-size: 30px; color: #ff1e1e;" title="刪除"></a>
+
+          <a href="/finish_project/{{process_project.SID}} " onclick="return myFunction2()" class="layui-icon layui-icon-ok"
+            style="font-size: 30px; color: #1E9FFF;" title="結案"></a>
+
+
         </td>
       </tr>
       {% endfor %}
@@ -134,16 +140,16 @@
   </div>
 
   <div style="width: 90%;height: 350px;margin: 20px auto;">
-    <table lay-filter="project_table">
+    <table lay-filter="project_table2">
       <thead>
         <tr>
-          <th lay-data="{field:'SID'}">編號</th>
+          <th lay-data="{field:'SID', width: 80}">專案ID</th>
           <th lay-data="{field:'project_name'}">專案名稱</th>
           <th lay-data="{field:'work_mode'}">狀態</th>
           <th lay-data="{field:'start_time'}">開始時間</th>
           <th lay-data="{field:'expected_end_time'}">預計結束時間</th>
           <th lay-data="{field:'end_time'}">結束時間</th>
-          <th lay-data="{field:'percent_complete'}">完成百分比</th>
+          <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
           <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
           <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
           <!-- <td>操作</td> -->
@@ -180,11 +186,33 @@
     layui.use('form', function () {
       var table = layui.table;
       table.init('project_table', {
-        height: 315
+        height: 315,
+        toolbar: true,
+        title:'進行中專案',
+        
+      });
+    });
+
+    layui.use('form', function () {
+      var table = layui.table;
+      table.init('project_table2', {
+        height: 315,
+        toolbar: true,
+        title:'已結案專案',
+        
       });
     });
     function myFunction() {
-      var result = confirm("確定要刪除嗎");
+      var result = confirm("確定要刪除嗎?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }	
+
+    function myFunction2() {
+      var result = confirm("確定結案嗎?");
       if (result) {
         return true;
       } else {
