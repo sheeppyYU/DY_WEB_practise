@@ -66,7 +66,7 @@
       <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;">
     </li>
 
-    <li class="layui-nav-item" style="white-space: nowrap; margin-right: 30px;">
+    <li class="layui-nav-item" style="white-space: nowrap; margin-right: 30px; z-index: 1001;">
       <a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
       <dl class="layui-nav-child" style="text-align: left; ">
         <dd><a href="/chg_passwd">修改密碼</a></dd>
@@ -93,7 +93,7 @@
           <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
           <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
           <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
-          <th lay-data="{field:'option'}">操作</th>
+          <th lay-data="{field:'option', width: 125}">操作</th>
         </tr>
       </thead>
       {% for process_project in work %}
@@ -186,9 +186,11 @@
     layui.use('form', function () {
       var table = layui.table;
       table.init('project_table', {
-        height: 315,
+        height: 325,
         toolbar: true,
         title:'進行中專案',
+        page: true,
+        limit:5
         
       });
     });
@@ -196,9 +198,11 @@
     layui.use('form', function () {
       var table = layui.table;
       table.init('project_table2', {
-        height: 315,
+        height: 325,
         toolbar: true,
         title:'已結案專案',
+        page: true,
+        limit:5
         
       });
     });
