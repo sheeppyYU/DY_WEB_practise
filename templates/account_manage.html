@@ -31,7 +31,7 @@
 			<div><a href="/index"> <img src="../static/LOGO.png" alt="LOGO" style="width: 7%; height: 7%;"> </a></div>
 		</li>
 
-		<li class="layui-nav-item" style="white-space: nowrap;">
+		<li class="layui-nav-item" style="white-space: nowrap; margin-right: 30px; z-index: 1001;">
 			<a href="javascript:;" style="color: rgb(255, 255, 255);">{{ session['acc_nu'] }}</a>
 			<dl class="layui-nav-child" style="text-align: left;">
 				<dd><a href="/chg_passwd">修改密碼</a></dd>
@@ -42,7 +42,7 @@
 	</ul>
 	<br>
 	<div style="width: 1000px;height: 400px;margin: 20px auto;">
-		<table lay-filter="demo">
+		<table lay-filter="account_manage">
 			<thead>
 				<tr>
 					<th lay-data="{field:'acc_nu'}">帳號</th>
@@ -85,9 +85,12 @@
 	layui.use('form', function () {
 		var table = layui.table;
 
-		table.init('demo', {
-			height: 315
-			, limit: 10
+		table.init('account_manage', {
+			height: 325,
+			toolbar: true,
+			title: '帳號',
+			page: true,
+			limit: 15
 		});
 	});
 	function myFunction() {
