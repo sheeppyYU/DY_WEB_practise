@@ -1,42 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>新增工作項目</title>
-    <link rel="stylesheet" href="/static/css/layui.css">
-    <script src="/static/layui.js"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
-    <style>
-      /* 為表單設定一個固定的寬度並使用自動邊距來置中它 */
-      #add_option {
-        width: 500px;
-        margin: 0 auto;
-      }
-  
-      /* 為了讓標籤和輸入元素在同一行，我們讓 .layui-form-item 元素成為flex容器，並置中其子元素 */
-      .layui-form-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-  
-      /* 為了在標籤和輸入元素之間創建一些空間，我們給 .layui-form-label 元素添加了右邊距 */
-      .layui-form-label {
-        margin-right: 10px;
-      }
-  
-      /*設定表格最小高度*/
-      .option_table .layui-table-view {
-        min-height: 57px;  /* 這裡的150px是你想要的最小高度 */
-      }
 
-        /* 水平置中表單及其內容 */
-      #form-container {
-        text-align: center;
-      }
-    </style>
-  </head>
-  
+<head>
+  <meta charset="UTF-8">
+  <title>新增工作項目</title>
+  <link rel="stylesheet" href="/static/css/layui.css">
+  <script src="/static/layui.js"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='3.ico') }}">
+  <style>
+    /* 為表單設定一個固定的寬度並使用自動邊距來置中它 */
+    #add_option {
+      width: 500px;
+      margin: 0 auto;
+    }
+
+    /* 為了讓標籤和輸入元素在同一行，我們讓 .layui-form-item 元素成為flex容器，並置中其子元素 */
+    .layui-form-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 為了在標籤和輸入元素之間創建一些空間，我們給 .layui-form-label 元素添加了右邊距 */
+    .layui-form-label {
+      margin-right: -100px;
+    }
+
+    /*設定表格最小高度*/
+    .option_table .layui-table-view {
+      min-height: 57px;
+      /* 這裡的150px是你想要的最小高度 */
+    }
+
+    /* 水平置中表單及其內容 */
+    #form-container {
+      text-align: center;
+    }
+
+
+    label.xrequired:before {
+      content: '* ';
+      color: red;
+    }
+  </style>
+
+  </style>
+</head>
+
 <body>
   <ul class="layui-nav" lay-filter="" style="display: flex; align-items: center; justify-content: space-between;">
     <li style="display: flex; align-items: center;">
@@ -52,107 +62,108 @@
       </dl>
     </li>
   </ul>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<!-- ---------------------------------------------------------------------------- -->
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <!-- ---------------------------------------------------------------------------- -->
 
-<div id="form-container"style="width: 500px;height: 400px;margin: 100px auto;">
-<form class="layui-form" action="/add_work_option/{{SID}}" method="POST" id="add_option">
-  <div class="layui-form-item">
-      <label class="layui-form-label" for="select">工作項目:</label>
-      <div class="layui-input-block" style="width: 140px;">
-        <select id="select" lay-filter="selectFilter" name="option" lay-verify="required">
-          <option selected disabled>請選擇工作項目</option>
-          <option value="前期規劃">前期規劃</option>
-          <option value="現場工程">現場工程</option>
-          <option value="設備吊裝">設備吊裝</option>
-          <option value="貨櫃預置工程">貨櫃預置工程</option>
-          <option value="機電現場工程">機電現場工程</option>
-          <option value="貨櫃現場工程">貨櫃現場工程</option>
-          <option value="廠區現場工程">廠區現場工程</option>
+  <div style="width: 500px;height: 400px;margin: 100px auto;">
+    <form class="layui-form" action="/add_work_option/{{SID}}" method="POST" id="add_option">
+      <div class="layui-form-item">
+        <label class="layui-form-label xrequired" for="select">工作項目:</label>
+        <div class="layui-input-block" style="width: 140px;">
+          <select id="select" lay-filter="selectFilter" name="option" lay-verify="required">
+            <option selected disabled>請選擇工作項目</option>
+            <option value="前期規劃">前期規劃</option>
+            <option value="現場工程">現場工程</option>
+            <option value="設備吊裝">設備吊裝</option>
+            <option value="貨櫃預置工程">貨櫃預置工程</option>
+            <option value="機電現場工程">機電現場工程</option>
+            <option value="貨櫃現場工程">貨櫃現場工程</option>
+            <option value="廠區現場工程">廠區現場工程</option>
           </select>
+        </div>
       </div>
-    </div>
-  <div class="layui-form-item">
-      <label class="layui-form-label">開始時間:</label>
-      <div class="layui-input-block" style="width: 140px;">
-      <input type="date" id="item_date1" name="option_start_time" class="layui-input" required lay-verify="required">  
+      <div class="layui-form-item">
+        <label class="layui-form-label xrequired">開始時間:</label>
+        <div class="layui-input-block" style="width: 140px;">
+          <input type="date" id="item_date1" name="option_start_time" class="layui-input" required
+            lay-verify="required">
+        </div>
       </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">結束時間:</label>
+        <div class="layui-input-block" style="width: 140px;">
+          <input type="date" id="item_date2" name="option_end_time" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button type="submit" value="Submit" class="layui-btn" lay-submit="">建立</button>
+          <a href="/work_option/{{SID}}" class="layui-btn">返回</a>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">結束時間:</label>
-    <div class="layui-input-block" style="width: 140px;">
-    <input type="date" id="item_date2" name="option_end_time" class="layui-input">  
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button type="submit" value="Submit" class="layui-btn" lay-submit ="">建立</button>
-      <a href="/work_option/{{SID}}" class="layui-btn">返回</a>
-    </div>
-  </div>
-</form>
-</div>
 
-<script>
-  
-  layui.use('form', function(){
-    var form = layui.form;
-    var table = layui.table;
+  <script>
 
-    form.verify({
-    required: function(value, item) {
-      if (value === '' || value === null || value === undefined) {
-        return '請選擇工作項目';
-      }
-    }
-  });
+    layui.use('form', function () {
+      var form = layui.form;
+      var table = layui.table;
 
-    table.init('option_value_table', {
-      limit: 10
-     });
-
-        
-    
-    form.on('select(selectFilter)', function(data){
-      // 把 JSON 字串轉換成物件
-      var project_optionJ = JSON.parse('{{ project_option_json|safe }}');
-  
-      // 使用 map 函式來創建一個新陣列，該陣列只包含選項值
-      var option_valuesJ = project_optionJ.map(function(option){
-        return option['option_value'];
+      form.verify({
+        required: function (value, item) {
+          if (value === '' || value === null || value === undefined) {
+            return '請選擇工作項目';
+          }
+        }
       });
-  
-      // 檢查選擇的值是否存在於陣列中
-      if(option_valuesJ.includes(data.value)){
-        alert("已重複，請重新選擇");
-        // 將選擇的值重置為預設值
-        data.elem.value = data.elem.querySelector('option:disabled').value;
-        // 渲染表單以反映變更
-        form.render('select');
-      }
+
+      table.init('option_value_table', {
+        limit: 10
+      });
+
+
+
+      form.on('select(selectFilter)', function (data) {
+        // 把 JSON 字串轉換成物件
+        var project_optionJ = JSON.parse('{{ project_option_json|safe }}');
+
+        // 使用 map 函式來創建一個新陣列，該陣列只包含選項值
+        var option_valuesJ = project_optionJ.map(function (option) {
+          return option['option_value'];
+        });
+
+        // 檢查選擇的值是否存在於陣列中
+        if (option_valuesJ.includes(data.value)) {
+          alert("已重複，請重新選擇");
+          // 將選擇的值重置為預設值
+          data.elem.value = data.elem.querySelector('option:disabled').value;
+          // 渲染表單以反映變更
+          form.render('select');
+        }
+      });
+
+      // 將日期輸入值設為今天的日期
+      var today = new Date().toISOString().substr(0, 10);
+      document.getElementById("item_date1").value = today;
     });
-    
-    // 將日期輸入值設為今天的日期
-    var today = new Date().toISOString().substr(0, 10);
-    document.getElementById("item_date1").value = today;
-    console.info("design by sheeppy>sheeppy2313131@gmail.com");
-  });
 
 
-  function myFunction() {
+    function myFunction() {
       var result = confirm("確定要刪除嗎");
       if (result) {
-      return true;
-      } else{
-      return false;
+        return true;
+      } else {
+        return false;
       }
-    }	 
+    }
 
   </script>
 
-  </body>    
-  </html>
+</body>
+
+</html>

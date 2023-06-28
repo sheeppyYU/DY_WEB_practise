@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-06-15 04:04:07
+-- 產生時間： 2023-06-28 04:21:12
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -41,7 +41,8 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`acc_nu`, `passwd`, `name`, `department`, `limits`) VALUES
 ('0', '0', '0', '管理部', 3),
-('1', '1', '1', '生產部', 1);
+('1', '1', '1', '生產部', 1),
+('testacc', '0', 'testacc', '生產部', 3);
 
 -- --------------------------------------------------------
 
@@ -83,26 +84,6 @@ CREATE TABLE `option_item` (
   `SID` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- 傾印資料表的資料 `option_item`
---
-
-INSERT INTO `option_item` (`id`, `item_id`, `item_value`, `is_checked`, `SID`) VALUES
-(26, 17, '9', 1, 'kh01'),
-(27, 17, '10', 1, 'kh01'),
-(28, 17, '11', 1, 'kh01'),
-(29, 17, '12', 1, 'kh01'),
-(30, 17, '13', 1, 'kh01'),
-(31, 19, '細項一111', 1, 'kh02'),
-(35, 17, '14', 1, 'kh01'),
-(36, 17, '15', 1, 'kh01'),
-(37, 18, '123', 0, 'kh01'),
-(38, 18, '321', 1, 'kh01'),
-(39, 18, '14', 1, 'kh01'),
-(43, 21, '測試', 1, 'kh02'),
-(44, 21, '測試R', 1, 'kh02'),
-(45, 21, '測試RRR', 0, 'kh02');
-
 -- --------------------------------------------------------
 
 --
@@ -117,21 +98,6 @@ CREATE TABLE `project_option` (
   `option_start_time` varchar(80) DEFAULT NULL,
   `option_end_time` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- 傾印資料表的資料 `project_option`
---
-
-INSERT INTO `project_option` (`option_id`, `option_value`, `SID`, `option_percentage`, `option_start_time`, `option_end_time`) VALUES
-(17, '前期規劃', 'kh01', 100, '2023-06-07', ''),
-(18, '現場工程', 'kh01', 67, '2023-06-07', ''),
-(19, '前期規劃', 'kh02', 100, '2023-06-08', ''),
-(20, '貨櫃現場工程', 'kh02', 0, '2023-06-08', ''),
-(21, '現場工程', 'kh02', 67, '2023-06-08', ''),
-(22, '設備吊裝', 'kh02', 0, '2023-06-08', ''),
-(25, '設備吊裝', 'kh01', 0, '2023-06-08', ''),
-(26, '貨櫃現場工程', 'kh01', 0, '2023-06-08', ''),
-(28, '貨櫃預置工程', 'kh02', 0, '2023-06-12', '2023-06-30');
 
 -- --------------------------------------------------------
 
@@ -149,19 +115,21 @@ CREATE TABLE `work_schedule` (
   `percent_complete` int(11) DEFAULT NULL,
   `estimated_working_day` varchar(80) DEFAULT NULL,
   `actual_working_day` varchar(80) DEFAULT NULL,
-  `state` tinyint(1) DEFAULT NULL
+  `state` tinyint(1) DEFAULT NULL,
+  `remark` varchar(255) NOT NULL DEFAULT '無'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `work_schedule`
 --
 
-INSERT INTO `work_schedule` (`SID`, `project_name`, `work_mode`, `start_time`, `expected_end_time`, `end_time`, `percent_complete`, `estimated_working_day`, `actual_working_day`, `state`) VALUES
-('fin', 'fin', '進行中', '2023-06-15', '2023-07-08', '2023-07-08', NULL, '23', '23', 1),
-('FIN2', 'FIN2', '進行中', '2023-06-15', '2023-07-07', '2023-07-08', NULL, '22', '23', 1),
-('FIN3', 'FIN3', '停工', '2023-06-15', '2023-07-07', '2023-07-07', NULL, '22', '22', 1),
-('kh01', '測試專案一', '進行中', '2023-06-06', '2023-06-22', '2023-06-23', 42, '16', '17', 0),
-('kh02', '測試專案二', '進行中', '2023-06-08', '2023-07-01', '2023-06-30', 33, '23', '22', 0);
+INSERT INTO `work_schedule` (`SID`, `project_name`, `work_mode`, `start_time`, `expected_end_time`, `end_time`, `percent_complete`, `estimated_working_day`, `actual_working_day`, `state`, `remark`) VALUES
+('111', '111', '進行中', '2023-06-27', '2023-06-27', '', 0, '0', '', 1, '123'),
+('fin', 'fin', '進行中', '2023-06-15', '2023-07-08', '2023-07-08', NULL, '23', '23', 1, '無'),
+('FIN2', 'FIN2', '進行中', '2023-06-15', '2023-07-07', '2023-07-08', NULL, '22', '23', 1, '無'),
+('FIN3', 'FIN3', '停工', '2023-06-15', '2023-07-07', '2023-07-07', NULL, '22', '22', 1, '無'),
+('kh06', '測試專案六', '停工', '2023-06-20', '2023-07-08', '2023-07-22', NULL, '18', '32', 1, '無'),
+('燦印SG01', '測試燦印SG01', '進行中', '2023-06-27', '2023-06-27', '', 0, '0', '', 0, '停工');
 
 --
 -- 已傾印資料表的索引
@@ -209,13 +177,13 @@ ALTER TABLE `work_schedule`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `option_item`
 --
 ALTER TABLE `option_item`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `project_option`
 --
 ALTER TABLE `project_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 已傾印資料表的限制式

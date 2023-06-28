@@ -18,6 +18,11 @@
       text-align: center;
       /* 設置文字居中對齊 */
     }
+
+    label.xrequired:before {
+      content: '* ';
+      color: red;
+    }
   </style>
 </head>
 
@@ -40,28 +45,28 @@
   <div style="width: 500px;height: 400px;margin: 170px auto;">
     <form class="layui-form" action="add_account" method="POST">
       <div class="layui-form-item">
-        <label class="layui-form-label">帳號:</label>
+        <label class="layui-form-label xrequired">帳號:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="text" name="acc_nu" required lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入帳號">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">密碼:</label>
+        <label class="layui-form-label xrequired">密碼:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="password" name="passwd" required lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入密碼">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">姓名:</label>
+        <label class="layui-form-label xrequired">姓名:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入姓名">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label" for="select">部門:</label>
+        <label class="layui-form-label xrequired" for="select">部門:</label>
         <div class="layui-input-block" style="width: 120px;">
           <select id="department" name="department">
             <option selected disabled>請選擇部門</option>
@@ -77,7 +82,7 @@
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label" for="select">權限:</label>
+        <label class="layui-form-label xrequired" for="select">權限:</label>
         <div class="layui-input-block" style="width: 120px;">
           <select id="limits" name="limits">
             <option selected disabled>請選擇權限</option>
