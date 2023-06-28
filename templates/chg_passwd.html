@@ -18,7 +18,23 @@
       text-align: center;
       /* 設置文字居中對齊 */
     }
+
+
+    label.xrequired:before {
+      content: '* ';
+      color: red;
+    }
+
+    .flex-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .flex-container>div {
+      margin: 10px;
+    }
   </style>
+
 </head>
 
 <body>
@@ -39,28 +55,28 @@
   <div style="width: 500px;height: 400px;margin: 120px auto;">
     <form class="layui-form" action="/chg_passwd" method="POST">
       <div class="layui-form-item">
-        <label class="layui-form-label">帳號:</label>
+        <label class="layui-form-label xrequired">帳號:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="text" name="acc_nu" lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入帳號">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">舊密碼:</label>
+        <label class="layui-form-label xrequired">舊密碼:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="password" name="old_passwd" lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入舊密碼">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">新密碼:</label>
+        <label class="layui-form-label xrequired">新密碼:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="password" name="new_passwd" lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="輸入新密碼">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">確認新密碼:</label>
+        <label class="layui-form-label xrequired flex-container">確認新密碼:</label>
         <div class="layui-input-block" style="width: 250px;">
           <input type="password" name="check_passwd" lay-verify="required" autocomplete="off" class="layui-input"
             placeholder="確認新密碼">

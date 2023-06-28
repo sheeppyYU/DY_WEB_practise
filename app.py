@@ -83,6 +83,9 @@ def index():
         cursor.execute("SELECT * FROM work_schedule WHERE state = 1")  # 查詢結案工作
         finish_work = cursor.fetchall()  # 獲取查詢結果
 
+
+
+
     # 渲染index頁面，將工作排程傳遞給index頁面
     return render_template('index.html', work=work, finish_work=finish_work)
 
@@ -221,6 +224,7 @@ def logout():
 def add_project():
 
     if request.method == 'POST':
+       
         SID = request.form.get('SID')
         project_name = request.form.get('project_name')
         work_mode = request.form.get('work_mode')
@@ -232,16 +236,22 @@ def add_project():
         date3 = ''
         estimated_working_day = (date2 - date1).days
         actual_working_day = ''
+        remark = request.form.get('remark')
 
         if end_time:
             date3 = datetime.strptime(end_time, '%Y-%m-%d')
             actual_working_day = (date3 - date1).days
 
-        with connect.cursor() as cursor:
-            sql = "INSERT INTO work_schedule (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, state) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, 0))
-            connect.commit()
-        
+        try:
+            with connect.cursor() as cursor:
+                sql = "INSERT INTO work_schedule (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, state, remark) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (SID, project_name, work_mode, start_time, expected_end_time, end_time, estimated_working_day, actual_working_day, 0, remark))
+                connect.commit()                   
+        except:
+            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            SID_error = "專案代號重複，請重新填寫"
+            return render_template('add_project.html', SID_error=SID_error)
+
         return redirect(url_for('index'))
 
     else:
@@ -281,15 +291,16 @@ def chg_project(SID):
         date3 = ''
         estimated_working_day = (date2 - date1).days
         actual_working_day = ''
+        remark = request.form.get('remark')
 
         if end_time:
             date3 = datetime.strptime(end_time, '%Y-%m-%d')
             actual_working_day = (date3 - date1).days
 
         with connect.cursor() as cursor:
-            sql = "UPDATE work_schedule SET project_name = %s, work_mode = %s, start_time = %s, expected_end_time = %s, end_time = %s, estimated_working_day = %s, actual_working_day = %s  WHERE SID = %s"
+            sql = "UPDATE work_schedule SET project_name = %s, work_mode = %s, start_time = %s, expected_end_time = %s, end_time = %s, estimated_working_day = %s, actual_working_day = %s, remark = %s WHERE SID = %s"
             cursor.execute(sql, (project_name, work_mode, start_time, expected_end_time,
-                           end_time, estimated_working_day, actual_working_day, SID))
+                           end_time, estimated_working_day, actual_working_day, remark, SID))
             connect.commit()
 
         return redirect(url_for('index'))
@@ -536,6 +547,61 @@ def finish_project(SID):
 if __name__ == '__main__':
     # app.run(debug=True, port=5000)  # 運行Flask應用
     app.run(debug=True, host="0.0.0.0", port=5000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #                    ___====-_  _-====___
 #              _--^^^     //      \\     ^^^--_

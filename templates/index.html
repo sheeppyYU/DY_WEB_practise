@@ -80,6 +80,7 @@
   <div style="margin: 20px 20px; text-align: center;">
     <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">專案進度</h2>
   </div>
+
   <div style="width: 90%;height: 350px;margin: 20px auto;">
     <table lay-filter="project_table">
       <thead>
@@ -93,10 +94,11 @@
           <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
           <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
           <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
-          <th lay-data="{field:'option', width: 125}">操作</th>
+          <th lay-data="{field:'option', width: 160}">操作</th>
         </tr>
       </thead>
       {% for process_project in work %}
+      <div id="remark_div" style="display: none;">{{process_project['remark']}}</div>
       <tr>
         <td>{{process_project['SID']}}</td>
         <td><a href="/work_option/{{process_project.SID}}" style="color:red;">{{process_project['project_name']}}</a>
@@ -113,14 +115,18 @@
           {% endif %}
         </td>
         <td>
+          
+          <a onclick="return myFunction3(`{{process_project['remark']}}`)" class="layui-icon layui-icon-file-b"
+            style="font-size: 30px; color: #1E9FFF;" title="備註"></a>
+
           <a href="/chg_project/{{process_project.SID}}" class="layui-icon layui-icon-edit"
             style="font-size: 30px; color: #1E9FFF;" title="修改"></a>
 
           <a href="/delete_work/{{process_project.SID}}" onclick="return myFunction()"
             class="layui-icon layui-icon-delete" style="font-size: 30px; color: #ff1e1e;" title="刪除"></a>
 
-          <a href="/finish_project/{{process_project.SID}} " onclick="return myFunction2()" class="layui-icon layui-icon-ok"
-            style="font-size: 30px; color: #1E9FFF;" title="結案"></a>
+          <a href="/finish_project/{{process_project.SID}} " onclick="return myFunction2()"
+            class="layui-icon layui-icon-ok" style="font-size: 30px; color: #1E9FFF;" title="結案"></a>
 
 
         </td>
@@ -155,7 +161,7 @@
           <!-- <td>操作</td> -->
         </tr>
       </thead>
-
+      
       {% for end_project in finish_work %}
       <tr>
         <td>{{end_project['SID']}}</td>
@@ -178,6 +184,8 @@
   </div>
 
   <script src="/static/layui.js"></script>
+
+
   <script>
     setTimeout(() => {
       document.location.reload();
@@ -188,10 +196,10 @@
       table.init('project_table', {
         height: 325,
         toolbar: true,
-        title:'進行中專案',
+        title: '進行中專案',
         page: true,
-        limit:5
-        
+        limit: 5
+
       });
     });
 
@@ -200,10 +208,10 @@
       table.init('project_table2', {
         height: 325,
         toolbar: true,
-        title:'已結案專案',
+        title: '已結案專案',
         page: true,
-        limit:5
-        
+        limit: 5
+
       });
     });
     function myFunction() {
@@ -213,7 +221,7 @@
       } else {
         return false;
       }
-    }	
+    }
 
     function myFunction2() {
       var result = confirm("確定結案嗎?");
@@ -222,7 +230,24 @@
       } else {
         return false;
       }
-    }	
+    }
+
+    function myFunction3(x) {
+      layui.use('layer', function () {
+        var layer = layui.layer;
+        
+        layer.open({
+          type: 0,
+          content: x
+          ,closeBtn:0
+        });
+
+      });
+
+    }
+
+
+
   </script>
 
 </body>
