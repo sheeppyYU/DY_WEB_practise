@@ -13,21 +13,6 @@
     max-width: 300px;
   }
 
-  @media only screen and (min-width: 600px) {
-    .layui-col-md4 {
-      text-align: center;
-      width: 20%;
-      max-width: 300px;
-    }
-  }
-
-  @media only screen and (min-width: 768px) {
-    .layui-col-md4 {
-      width: 33.33%;
-      max-width: 300px;
-    }
-  }
-
   .layui-panel {
     height: 100%;
     margin: 10px;
@@ -48,6 +33,18 @@
     /* 設置內邊距 */
     text-align: center;
     /* 設置文字居中對齊 */
+  }
+
+  table td div.layui-table-cell,
+  table td div.layui-table-cell div {
+    height: auto !important;
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+
+  .layui-table-cell.laytable-cell-1-0-8 {
+    white-space: pre-line;
   }
 </style>
 
@@ -77,24 +74,25 @@
   </ul>
   <br>
   <!--------------進行中專案-------------->
-  <div style="margin: 20px 20px; text-align: center;">
+  <div style="margin: 20px; text-align: center;">
     <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">專案進度</h2>
   </div>
 
-  <div style="width: 90%;height: 350px;margin: 20px auto;">
+  <div style="width: 90%;height: 550px;margin:auto;">
     <table lay-filter="project_table">
       <thead>
         <tr>
           <th lay-data="{field:'SID', width: 80}">專案ID</th>
-          <th lay-data="{field:'project_name'}">專案名稱</th>
-          <th lay-data="{field:'work_mode'}">狀態</th>
+          <th lay-data="{field:'project_name', width: 122}">專案名稱</th>
+          <th lay-data="{field:'work_mode', width: 72}">狀態</th>
           <th lay-data="{field:'start_time'}">開始時間</th>
-          <th lay-data="{field:'expected_end_time'}">預計結束時間</th>
+          <th lay-data="{field:'expected_end_time'}">預計<br>結束時間</th>
           <th lay-data="{field:'end_time'}">結束時間</th>
           <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
-          <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
-          <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
-          <th lay-data="{field:'option', width: 160}">操作</th>
+          <th lay-data="{field:'estimated_working_day', width: 80}">預計天數</th>
+          <th lay-data="{field:'actual_working_day', width: 80}">實際天數</th>
+          <th lay-data="{field:'remark', width: 200}">備註</th>
+          <th lay-data="{field:'option', width: 160 }">操作</th>
         </tr>
       </thead>
       {% for process_project in work %}
@@ -114,8 +112,9 @@
           {{process_project['actual_working_day']}}天
           {% endif %}
         </td>
+        <td>{{process_project['remark']}}</td>
         <td>
-          
+
           <a onclick="return myFunction3(`{{process_project['remark']}}`)" class="layui-icon layui-icon-file-b"
             style="font-size: 30px; color: #1E9FFF;" title="備註"></a>
 
@@ -138,10 +137,10 @@
   </div>
 
 
-  <br>
+  <br> <br> <br> <br> <br> <br> <br>
   <br>
   <!--------------已完成專案-------------->
-  <div style="margin: 20px 20px; text-align: center;">
+  <div style="margin: 20px; text-align: center;">
     <h2 class="layui-bg-cyan" style="width: 93%;margin: auto; padding: 1px; color: white;">已結案</h2>
   </div>
 
@@ -150,18 +149,18 @@
       <thead>
         <tr>
           <th lay-data="{field:'SID', width: 80}">專案ID</th>
-          <th lay-data="{field:'project_name'}">專案名稱</th>
-          <th lay-data="{field:'work_mode'}">狀態</th>
+          <th lay-data="{field:'project_name', width: 122}">專案名稱</th>
+          <th lay-data="{field:'work_mode', width: 72}">狀態</th>
           <th lay-data="{field:'start_time'}">開始時間</th>
           <th lay-data="{field:'expected_end_time'}">預計結束時間</th>
           <th lay-data="{field:'end_time'}">結束時間</th>
           <th lay-data="{field:'percent_complete', width: 80}">完成度</th>
-          <th lay-data="{field:'estimated_working_day'}">預計工作天數</th>
-          <th lay-data="{field:'actual_working_day'}">實際工作天數</th>
+          <th lay-data="{field:'estimated_working_day'}">預計天數</th>
+          <th lay-data="{field:'actual_working_day'}">實際天數</th>
           <!-- <td>操作</td> -->
         </tr>
       </thead>
-      
+
       {% for end_project in finish_work %}
       <tr>
         <td>{{end_project['SID']}}</td>
@@ -189,17 +188,16 @@
   <script>
     setTimeout(() => {
       document.location.reload();
-    }, 60000);
+    }, 120000);
 
     layui.use('form', function () {
       var table = layui.table;
       table.init('project_table', {
-        height: 325,
+        height: 600,
         toolbar: true,
         title: '進行中專案',
         page: true,
-        limit: 5
-
+        limit: 5,
       });
     });
 
@@ -235,18 +233,18 @@
     function myFunction3(x) {
       layui.use('layer', function () {
         var layer = layui.layer;
-        
-        layer.open({
-          type: 0,
-          content: x
-          ,closeBtn:0
-        });
+        var content = x.replace(/\n/g, '<br>');
+        alert(x)
+
+        // layer.open({
+        //   type: 0,
+        //   content: x
+        //   ,closeBtn:0
+        // });
 
       });
 
     }
-
-
 
   </script>
 

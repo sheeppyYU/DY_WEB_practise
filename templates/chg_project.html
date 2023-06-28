@@ -31,8 +31,8 @@
       <div class="layui-form-item">
         <label class="layui-form-label">專案代號:</label>
         <div class="layui-input-block" style="width: 250px;">
-          <input type="text" name="SID" required lay-verify="required" autocomplete="off" class="layui-input"  disabled="disabled"
-            placeholder="輸入專案代號" value="{{project.SID}}">
+          <input type="text" name="SID" required lay-verify="required" autocomplete="off" class="layui-input"
+            disabled="disabled" placeholder="輸入專案代號" value="{{project.SID}}">
         </div>
       </div>
       <div class="layui-form-item">
@@ -76,7 +76,8 @@
       <div class="layui-form-item">
         <label class="layui-form-label">備註:</label>
         <div class="layui-input-block" style="width: 250px;">
-          <input type="text" name="remark" style="height: 100px;" class="layui-input" placeholder="" value="{{project.remark}}">
+          <textarea name="remark" style="height: 100px;" class="layui-textarea" placeholder=""
+            id="remark-input">{{project.remark}}</textarea>
         </div>
       </div>
 
@@ -94,6 +95,23 @@
       var form = layui.form
     });
   </script>
+
+<script>
+  var remarkInput = document.getElementById("remark-input");
+  remarkInput.addEventListener("keydown", function(event) {
+    if (event.shiftKey && event.keyCode === 13) {
+      event.preventDefault(); // 防止表單送出
+      var startPos = this.selectionStart;
+      var endPos = this.selectionEnd;
+      var currentValue = this.value;
+      var newValue = currentValue.substring(0, startPos) + "\n" + currentValue.substring(endPos);
+      this.value = newValue;
+      this.selectionStart = startPos + 1;
+      this.selectionEnd = startPos + 1;
+    }
+  });
+</script>
+
 </body>
 
 </html>
