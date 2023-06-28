@@ -238,6 +238,7 @@ def add_project():
         actual_working_day = ''
         remark = request.form.get('remark')
 
+
         if end_time:
             date3 = datetime.strptime(end_time, '%Y-%m-%d')
             actual_working_day = (date3 - date1).days
@@ -347,7 +348,7 @@ def work_option(SID):
             "SELECT * FROM project_option WHERE SID = %s ORDER BY option_id ASC", (SID,))   # 查詢所有工作排程
         project_option = cursor.fetchall()  # 獲取查詢結果
 
-    project_order = ['前期規劃', '現場工程', '設備吊裝', '貨櫃預置工程', '機電現場工程', '貨櫃現場工程', '廠區現場工程']
+    project_order = ['前期規劃', '現場工程','現場維運','設計規劃','發包採購','盤體進場/櫃', '設備吊裝', '貨櫃預置工程', '機電現場工程', '貨櫃現場工程', '廠區現場工程','系統測試','系統驗收','現場收尾']
     try:
         project_option.sort(key=lambda x: project_order.index(x['option_value']))
     except:
