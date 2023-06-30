@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-06-28 04:21:12
+-- 產生時間： 2023-06-30 09:44:08
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -41,8 +41,7 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`acc_nu`, `passwd`, `name`, `department`, `limits`) VALUES
 ('0', '0', '0', '管理部', 3),
-('1', '1', '1', '生產部', 1),
-('testacc', '0', 'testacc', '生產部', 3);
+('1', '1', '1', '生產部', 1);
 
 -- --------------------------------------------------------
 
@@ -84,6 +83,13 @@ CREATE TABLE `option_item` (
   `SID` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- 傾印資料表的資料 `option_item`
+--
+
+INSERT INTO `option_item` (`id`, `item_id`, `item_value`, `is_checked`, `SID`) VALUES
+(55, 39, '完成配制', 0, 'BS CH11200');
+
 -- --------------------------------------------------------
 
 --
@@ -99,6 +105,13 @@ CREATE TABLE `project_option` (
   `option_end_time` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- 傾印資料表的資料 `project_option`
+--
+
+INSERT INTO `project_option` (`option_id`, `option_value`, `SID`, `option_percentage`, `option_start_time`, `option_end_time`) VALUES
+(39, '前期規劃', 'BS CH11200', 0, '2023-06-30', '');
+
 -- --------------------------------------------------------
 
 --
@@ -108,6 +121,7 @@ CREATE TABLE `project_option` (
 CREATE TABLE `work_schedule` (
   `SID` varchar(80) NOT NULL,
   `project_name` varchar(120) DEFAULT NULL,
+  `project_class` varchar(255) NOT NULL DEFAULT '',
   `work_mode` varchar(80) DEFAULT NULL,
   `start_time` varchar(80) DEFAULT NULL,
   `expected_end_time` varchar(80) DEFAULT NULL,
@@ -123,13 +137,11 @@ CREATE TABLE `work_schedule` (
 -- 傾印資料表的資料 `work_schedule`
 --
 
-INSERT INTO `work_schedule` (`SID`, `project_name`, `work_mode`, `start_time`, `expected_end_time`, `end_time`, `percent_complete`, `estimated_working_day`, `actual_working_day`, `state`, `remark`) VALUES
-('111', '111', '進行中', '2023-06-27', '2023-06-27', '', 0, '0', '', 1, '123'),
-('fin', 'fin', '進行中', '2023-06-15', '2023-07-08', '2023-07-08', NULL, '23', '23', 1, '無'),
-('FIN2', 'FIN2', '進行中', '2023-06-15', '2023-07-07', '2023-07-08', NULL, '22', '23', 1, '無'),
-('FIN3', 'FIN3', '停工', '2023-06-15', '2023-07-07', '2023-07-07', NULL, '22', '22', 1, '無'),
-('kh06', '測試專案六', '停工', '2023-06-20', '2023-07-08', '2023-07-22', NULL, '18', '32', 1, '無'),
-('燦印SG01', '測試燦印SG01', '進行中', '2023-06-27', '2023-06-27', '', 0, '0', '', 0, '停工');
+INSERT INTO `work_schedule` (`SID`, `project_name`, `project_class`, `work_mode`, `start_time`, `expected_end_time`, `end_time`, `percent_complete`, `estimated_working_day`, `actual_working_day`, `state`, `remark`) VALUES
+('BS CH11200', '柏堅-中興電工', '貨櫃', '進行中', '2023-06-02', '2023-06-14', '', 0, '12', '', 0, ''),
+('BS FO11201', '柏堅-天宇   (汐止一、二櫃)', '貨櫃', '進行中', '2023-06-30', '2023-07-30', '', 0, '30', '', 0, ''),
+('BS IB11201', '柏堅-廣錠 ((澎湖)23呎)', '貨櫃', '進行中', '2023-06-30', '2023-07-30', '', 0, '30', '', 0, ''),
+('BS IB11202', '柏堅-廣錠 ((澎湖)40呎)', '貨櫃', '進行中', '2023-06-30', '2023-07-30', '', 0, '30', '', 0, '');
 
 --
 -- 已傾印資料表的索引
@@ -177,13 +189,13 @@ ALTER TABLE `work_schedule`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `option_item`
 --
 ALTER TABLE `option_item`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `project_option`
 --
 ALTER TABLE `project_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- 已傾印資料表的限制式
